@@ -1,0 +1,215 @@
+/* Make VitePress chrome use Sprout's green as the accent */
+:root {
+  --vp-c-brand-1: #4a7c59;
+  --vp-c-brand-2: #56926a;
+  --vp-c-brand-3: #3d6b4a;
+  --vp-c-brand-soft: rgba(74, 124, 89, 0.14);
+
+  --vp-home-hero-name-color: #4a7c59;
+  --vp-home-hero-image-background-image: radial-gradient(
+    circle at center,
+    rgba(74, 124, 89, 0.22),
+    transparent 65%
+  );
+}
+
+/* Keep code groups/docs UI neutral */
+.VPDoc :not(.sp-demo) code {
+  border-radius: 4px;
+}
+
+/* Sidebar section headers should look like documentation labels, not buttons */
+.VPSidebarItem.level-0 > .item > .text,
+.VPSidebarItem.level-0.is-link > .item > .link > .text {
+  color: var(--vp-c-text-1);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* Active top-level item */
+.VPSidebarItem.level-0.is-active > .item > .link > .text {
+  color: var(--vp-c-brand-1);
+  background: transparent;
+}
+
+/* Group spacing */
+.VPSidebarItem.level-0 {
+  margin-top: 0.5rem;
+}
+
+.VPSidebarItem.level-0:first-child {
+  margin-top: 0;
+}
+
+.VPSidebarItem.level-0.is-link > .item > .VPLink,
+.VPSidebarItem.level-0 > .item > .caret {
+  background: transparent !important;
+  border-radius: 0 !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Force dialog to position relative to viewport, not docs shell */
+.sp-demo dialog,
+.sp-demo dialog[open] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+/* Ensure backdrop covers full viewport */
+.sp-demo dialog::backdrop {
+  position: fixed;
+  inset: 0;
+}
+
+/* Toast container — appended to body by Sprout JS, outside .sp-demo */
+#sp-toast-container {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  pointer-events: none;
+}
+#sp-toast-container[data-position="top-right"] { top: 0; right: 0; }
+#sp-toast-container[data-position="top-left"] { top: 0; left: 0; }
+#sp-toast-container[data-position="bottom-right"] { bottom: 0; right: 0; }
+#sp-toast-container[data-position="bottom-left"] { bottom: 0; left: 0; }
+#sp-toast-container[data-position="top-center"] {
+  top: 0; left: 50%; transform: translateX(-50%);
+}
+
+[data-sp-toast] {
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--sp-border, #2e332e);
+  background: var(--sp-surface, #111311);
+  color: var(--sp-text, #eaece8);
+  pointer-events: auto;
+  font-family: var(--sp-font, system-ui, sans-serif);
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+/* Type = thick left border accent; same surface and text for all */
+[data-sp-toast][data-type="success"] { border-left-width: 4px; border-left-color: var(--sp-success, #2e6644); }
+[data-sp-toast][data-type="danger"]  { border-left-width: 4px; border-left-color: var(--sp-danger, #8b3a3a); }
+[data-sp-toast][data-type="warning"] { border-left-width: 4px; border-left-color: var(--sp-warning, #7a5c1e); }
+[data-sp-toast][data-type="info"]    { border-left-width: 4px; border-left-color: var(--sp-info, #2a4f7a); }
+
+/* Hide default navbar theme toggle; our ThemeDropdown is in nav-bar-content-after */
+.VPNavBar .VPNavBarAppearance {
+  display: none !important;
+}
+
+/* Mobile sidebar demo: hidden by default, slides in from the right (so it doesn't cover VitePress left nav) */
+.sp-demo #docs-sidebar-mobile {
+  position: fixed !important;
+  top: 0;
+  right: -100% !important;
+  left: auto !important;
+  height: 100vh;
+  width: 80vw;
+  max-width: 280px;
+  z-index: 200;
+  transition: right 0.2s ease;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.3);
+  border-right: none;
+  border-left: 1px solid var(--sp-border, #2e332e);
+}
+.sp-demo #docs-sidebar-mobile[data-open] {
+  right: 0 !important;
+}
+
+/* Spacing for theme dropdown in navbar (same as appearance had) */
+.SproutThemeDropdownWrap {
+  margin-left: 8px;
+}
+@media (min-width: 1280px) {
+  .SproutThemeDropdownWrap {
+    margin-left: 16px;
+  }
+}
+
+/* Tooltip created by Sprout.tooltip() — appended to body */
+.sp-tooltip-js {
+  z-index: 9999 !important;
+}
+
+/* Dropdown menu — ensure it appears above VitePress chrome */
+.sp-demo sp-dropdown {
+  position: relative;
+}
+.sp-demo sp-menu {
+  z-index: 200;
+  position: absolute;
+}
+
+/* Navbar alignment — flat selectors so rules apply when nesting is not expanded */
+.sp-demo :is(header, [role="banner"]) > nav > * {
+  align-self: center;
+  flex-shrink: 0;
+}
+.sp-demo :is(header, [role="banner"]) > nav .brand,
+.sp-demo :is(header, [role="banner"]) > nav ul a,
+.sp-demo :is(header, [role="banner"]) > nav button,
+.sp-demo :is(header, [role="banner"]) > nav [role="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  box-sizing: border-box;
+  min-height: 0;
+  margin: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+.sp-demo :is(header, [role="banner"]) > nav .cluster {
+  align-items: center;
+}
+.sp-demo :is(header, [role="banner"]) > nav ul li {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.sp-demo :is(header, [role="banner"]) > nav button.icon,
+.sp-demo :is(header, [role="banner"]) > nav [role="button"].icon {
+  justify-content: center;
+}
+
+/* sp-tabs Web Component base display */
+sp-tabs { display: block; }
+sp-tab-list {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--sp-border, #2e332e);
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: var(--sp-4, 1rem);
+}
+sp-tab-list::-webkit-scrollbar { display: none; }
+sp-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--sp-2, 0.5rem) var(--sp-4, 1rem);
+  cursor: pointer;
+  color: var(--sp-text-2, #a8b0a4);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+sp-tab:hover { color: var(--sp-text, #eaece8); }
+sp-tab[aria-selected="true"] {
+  color: var(--sp-primary, #4a7c59);
+  border-bottom-color: var(--sp-primary, #4a7c59);
+}
+sp-panel { display: block; padding-top: var(--sp-4, 1rem); }
+sp-panel[hidden] { display: none; }

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprout interactions benchmark — runtime and interaction cost</title>
+  <link rel="stylesheet" href="../dist/sprout.min.css">
+  <script type="module">
+    import Sprout from '../dist/sprout.min.js';
+    window.Sprout = Sprout;
+    if (Sprout.init) Sprout.init();
+  </script>
+  <style>
+    body { padding: 1rem; max-width: 72rem; margin-inline: auto; }
+    section { margin-bottom: 2rem; }
+    section h2 { margin-bottom: 0.5rem; font-size: 1.25rem; }
+    .cluster.gap-3 { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>Sprout interactions benchmark</h1>
+  <p>Interactive components and repeated triggers. Measure JS execution, layout thrash, and interaction overhead.</p>
+
+  <!-- Dropdowns -->
+  <section id="dropdowns">
+    <h2>Dropdowns (multiple)</h2>
+    <div class="cluster gap-3">
+      <sp-dropdown>
+        <button slot="trigger">Menu 1 ▾</button>
+        <sp-menu>
+          <sp-menu-item>Edit</sp-menu-item>
+          <sp-menu-item>Delete</sp-menu-item>
+        </sp-menu>
+      </sp-dropdown>
+      <sp-dropdown>
+        <button slot="trigger">Menu 2 ▾</button>
+        <sp-menu>
+          <sp-menu-item>Option A</sp-menu-item>
+          <sp-menu-item>Option B</sp-menu-item>
+        </sp-menu>
+      </sp-dropdown>
+      <sp-dropdown>
+        <button class="outline" slot="trigger">Menu 3 ▾</button>
+        <sp-menu>
+          <sp-menu-item>One</sp-menu-item>
+          <sp-menu-item>Two</sp-menu-item>
+        </sp-menu>
+      </sp-dropdown>
+    </div>
+    <p><button type="button" id="open-dropdowns-seq">Open dropdowns sequentially (1→2→3)</button></p>
+  </section>
+
+  <!-- Tabs -->
+  <section id="tabs">
+    <h2>Tabs (multiple groups)</h2>
+    <sp-tabs>
+      <sp-tab-list>
+        <sp-tab panel="p1">Tab A</sp-tab>
+        <sp-tab panel="p2">Tab B</sp-tab>
+      </sp-tab-list>
+      <sp-panel id="p1"><p>Panel 1 content.</p></sp-panel>
+      <sp-panel id="p2"><p>Panel 2 content.</p></sp-panel>
+    </sp-tabs>
+    <sp-tabs style="margin-top: 1rem;">
+      <sp-tab-list>
+        <sp-tab panel="q1">One</sp-tab>
+        <sp-tab panel="q2">Two</sp-tab>
+        <sp-tab panel="q3">Three</sp-tab>
+      </sp-tab-list>
+      <sp-panel id="q1"><p>First.</p></sp-panel>
+      <sp-panel id="q2"><p>Second.</p></sp-panel>
+      <sp-panel id="q3"><p>Third.</p></sp-panel>
+    </sp-tabs>
+    <p><button type="button" id="toggle-tabs-repeat">Toggle tabs repeatedly (10×)</button></p>
+  </section>
+
+  <!-- Modal -->
+  <section id="modal">
+    <h2>Modal</h2>
+    <button type="button" data-modal="bench-modal">Open modal</button>
+    <button type="button" id="modal-open-close-repeat">Open/close modal 5×</button>
+    <dialog id="bench-modal">
+      <p>Modal content.</p>
+      <button type="button" data-modal-close>Close</button>
+    </dialog>
+  </section>
+
+  <!-- Toasts -->
+  <section id="toasts">
+    <h2>Toasts</h2>
+    <div class="cluster gap-3">
+      <button type="button" id="toast-one">Show 1 toast</button>
+      <button type="button" id="toast-ten">Show 10 toasts</button>
+      <button type="button" id="toast-types">Show one of each type</button>
+    </div>
+  </section>
+
+  <!-- Dismissible alerts -->
+  <section id="alerts">
+    <h2>Dismissible alerts</h2>
+    <div role="alert" data-dismissible>
+      Alert one <button type="button" data-dismiss-alert aria-label="Dismiss">×</button>
+    </div>
+    <div role="alert" class="success" data-dismissible>
+      Alert two <button type="button" data-dismiss-alert aria-label="Dismiss">×</button>
+    </div>
+  </section>
+
+  <!-- Navbar toggle -->
+  <section id="nav-toggle">
+    <h2>Navbar toggle</h2>
+    <header>
+      <nav>
+        <span class="brand">Brand</span>
+        <button type="button" data-nav-toggle aria-expanded="false" aria-label="Menu" class="icon ghost">☰</button>
+        <ul>
+          <li><a href="#">Link</a></li>
+        </ul>
+      </nav>
+    </header>
+  </section>
+
+  <!-- Sidebar toggle -->
+  <section id="sidebar-toggle">
+    <h2>Sidebar toggle</h2>
+    <button type="button" data-sidebar-toggle aria-controls="bench-sidebar" aria-expanded="false" aria-label="Sidebar">☰ Open sidebar</button>
+    <aside class="sidebar" id="bench-sidebar">
+      <nav>
+        <p class="sidebar-label">Menu</p>
+        <ul>
+          <li><a href="#">Home</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </section>
+
+  <!-- Tooltips -->
+  <section id="tooltips">
+    <h2>Tooltips</h2>
+    <button type="button" id="tt1">Hover for tooltip</button>
+    <span id="tt2" style="cursor: default;">Or this text</span>
+  </section>
+
+  <script>
+    (function() {
+      function runWhenSprout() {
+        if (!window.Sprout) {
+          setTimeout(runWhenSprout, 50);
+          return;
+        }
+        var S = window.Sprout;
+
+        document.getElementById('toast-one') && document.getElementById('toast-one').addEventListener('click', function() {
+          S.toast('Single toast');
+        });
+        document.getElementById('toast-ten') && document.getElementById('toast-ten').addEventListener('click', function() {
+          for (var i = 0; i < 10; i++) {
+            (function(j) { setTimeout(function() { S.toast('Toast ' + (j + 1)); }, j * 80); })(i);
+          }
+        });
+        document.getElementById('toast-types') && document.getElementById('toast-types').addEventListener('click', function() {
+          S.toast('Default');
+          S.toast('Success', { type: 'success' });
+          S.toast('Danger', { type: 'danger' });
+          S.toast('Warning', { type: 'warning' });
+          S.toast('Info', { type: 'info' });
+        });
+
+        document.getElementById('tt1') && S.tooltip(document.getElementById('tt1'), 'Tooltip text');
+        document.getElementById('tt2') && S.tooltip(document.getElementById('tt2'), 'Another tooltip');
+
+        document.getElementById('open-dropdowns-seq') && document.getElementById('open-dropdowns-seq').addEventListener('click', function() {
+          var dd = document.querySelectorAll('sp-dropdown');
+          var idx = 0;
+          function next() {
+            if (idx >= dd.length) return;
+            dd[idx].querySelector('[slot="trigger"]') && dd[idx].querySelector('[slot="trigger"]').click();
+            idx++;
+            setTimeout(next, 150);
+          }
+          next();
+        });
+
+        document.getElementById('toggle-tabs-repeat') && document.getElementById('toggle-tabs-repeat').addEventListener('click', function() {
+          var tabLists = document.querySelectorAll('sp-tab-list');
+          var count = 0;
+          function cycle() {
+            if (count >= 10) return;
+            tabLists.forEach(function(list) {
+              var tabs = list.querySelectorAll('sp-tab');
+              if (tabs.length) tabs[count % tabs.length].click();
+            });
+            count++;
+            setTimeout(cycle, 100);
+          }
+          cycle();
+        });
+
+        document.getElementById('modal-open-close-repeat') && document.getElementById('modal-open-close-repeat').addEventListener('click', function() {
+          var dialog = document.getElementById('bench-modal');
+          var openBtn = document.querySelector('[data-modal="bench-modal"]');
+          var closeBtn = dialog && dialog.querySelector('[data-modal-close]');
+          if (!dialog || !openBtn || !closeBtn) return;
+          var n = 0;
+          function cycle() {
+            if (n >= 5) return;
+            openBtn.click();
+            setTimeout(function() {
+              closeBtn.click();
+              n++;
+              setTimeout(cycle, 120);
+            }, 80);
+          }
+          cycle();
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runWhenSprout);
+      } else {
+        runWhenSprout();
+      }
+    })();
+  </script>
+</body>
+</html>

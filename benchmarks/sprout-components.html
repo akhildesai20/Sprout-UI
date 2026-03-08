@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprout components benchmark — static rendering stress</title>
+  <link rel="stylesheet" href="../dist/sprout.min.css">
+  <script type="module">
+    import Sprout from '../dist/sprout.min.js';
+    window.Sprout = Sprout;
+    if (Sprout.init) Sprout.init();
+  </script>
+  <style>
+    body { padding: 1rem; max-width: 72rem; margin-inline: auto; }
+    section { margin-bottom: 2rem; }
+    section h2 { margin-bottom: 1rem; font-size: 1.25rem; }
+    .bench-section { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>Sprout components benchmark</h1>
+  <p>Static component density. Loads dist/sprout.min.css and sprout.min.js. Measure layout/paint/style cost.</p>
+
+  <!-- 1. Buttons -->
+  <section id="buttons">
+    <h2>1. Buttons</h2>
+    <div class="bench-section">
+      <button>Default</button>
+      <button class="outline">Outline</button>
+      <button class="ghost">Ghost</button>
+      <button class="danger">Danger</button>
+      <button class="success">Success</button>
+      <button class="sm">Small</button>
+      <button class="lg">Large</button>
+      <button class="icon" aria-label="Icon">⊕</button>
+      <button class="outline icon" aria-label="Icon">✕</button>
+    </div>
+  </section>
+
+  <!-- 2. Form controls -->
+  <section id="forms">
+    <h2>2. Form controls</h2>
+    <div class="stack gap-4" style="max-width: 24rem;">
+      <div class="field">
+        <label for="bc1">Text</label>
+        <input id="bc1" type="text" placeholder="Input">
+      </div>
+      <div class="field">
+        <label for="bc2">Email</label>
+        <input id="bc2" type="email" placeholder="email@example.com">
+      </div>
+      <div class="field">
+        <label for="bc3">Textarea</label>
+        <textarea id="bc3" rows="2" placeholder="Textarea"></textarea>
+      </div>
+      <div class="field">
+        <label for="bc4">Select</label>
+        <select id="bc4">
+          <option>Option A</option>
+          <option>Option B</option>
+        </select>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" checked> Checkbox</label>
+      </div>
+      <div class="field">
+        <label><input type="radio" name="br" checked> Radio A</label>
+        <label><input type="radio" name="br"> Radio B</label>
+      </div>
+      <label class="toggle"><input type="checkbox" checked><span>Toggle</span></label>
+      <div class="field">
+        <label for="bc5">Range</label>
+        <input id="bc5" type="range" min="0" max="100" value="50">
+      </div>
+      <fieldset>
+        <legend>Fieldset</legend>
+        <div class="field">
+          <label for="bc6">Inside</label>
+          <input id="bc6" type="text">
+        </div>
+      </fieldset>
+    </div>
+  </section>
+
+  <!-- 3. Feedback -->
+  <section id="feedback">
+    <h2>3. Feedback</h2>
+    <div class="stack gap-3">
+      <div role="alert">Default alert</div>
+      <div role="alert" class="success">Success alert</div>
+      <div role="alert" class="danger">Danger alert</div>
+      <div class="cluster gap-2">
+        <span class="badge">Badge</span>
+        <span class="badge success">Success</span>
+        <span class="badge danger">Danger</span>
+        <span class="badge warning">Warning</span>
+        <span class="badge info">Info</span>
+      </div>
+      <progress value="60" max="100"></progress>
+      <progress></progress>
+      <meter value="0.7" min="0" max="1"></meter>
+      <span class="spinner sm" aria-hidden="true"></span>
+      <span class="spinner" aria-hidden="true"></span>
+      <div class="skeleton" style="width: 8rem; height: 1rem;"></div>
+      <div class="skeleton animated" style="width: 12rem; height: 1rem;"></div>
+    </div>
+  </section>
+
+  <!-- 4. Data display -->
+  <section id="data">
+    <h2>4. Data display</h2>
+    <div class="grid cols-3" style="gap: 1rem;">
+      <div class="card">
+        <header><h3>Card 1</h3></header>
+        <p>Card body.</p>
+      </div>
+      <div class="card">
+        <header><h3>Card 2</h3></header>
+        <p>Card body.</p>
+      </div>
+      <div class="card">
+        <header><h3>Card 3</h3></header>
+        <p>Card body.</p>
+      </div>
+    </div>
+    <div class="grid cols-3" style="gap: 1rem; margin-top: 1rem;">
+      <div class="stat"><span class="stat-label">Label</span><span class="stat-value">1,234</span></div>
+      <div class="stat"><span class="stat-label">Label</span><span class="stat-value">56%</span></div>
+      <div class="stat"><span class="stat-label">Label</span><span class="stat-value">99</span></div>
+    </div>
+    <div class="avatar-group" style="margin-top: 1rem;">
+      <span class="avatar" aria-label="A">A</span>
+      <span class="avatar" aria-label="B">B</span>
+      <span class="avatar" aria-label="C">C</span>
+    </div>
+    <pre style="margin-top: 1rem;"><code>const x = 1;</code></pre>
+    <hr style="margin: 1rem 0;">
+    <table>
+      <thead><tr><th>Name</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Alpha</td><td>Active</td></tr>
+        <tr><td>Beta</td><td>Pending</td></tr>
+        <tr><td>Gamma</td><td>Done</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. Navigation visuals -->
+  <section id="nav">
+    <h2>5. Navigation</h2>
+    <header>
+      <nav aria-label="Main">
+        <a href="#" class="brand">Brand</a>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#" class="active">Docs</a></li>
+        </ul>
+        <button type="button">Action</button>
+      </nav>
+    </header>
+    <nav aria-label="Breadcrumb" style="margin: 1rem 0;">
+      <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Section</a></li>
+        <li aria-current="page">Page</li>
+      </ol>
+    </nav>
+    <nav aria-label="Pagination" style="margin: 1rem 0;">
+      <ul class="pagination">
+        <li><a href="#">1</a></li>
+        <li><a href="#" aria-current="page">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><span>…</span></li>
+        <li><a href="#">10</a></li>
+      </ul>
+    </nav>
+    <aside class="sidebar" style="position: relative; left: 0; width: 14rem; height: auto;">
+      <nav>
+        <p class="sidebar-label">Menu</p>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Docs</a></li>
+        </ul>
+      </nav>
+    </aside>
+  </section>
+
+  <!-- 6. Stress test -->
+  <section id="stress">
+    <h2>6. Stress test</h2>
+    <p>Many repeated components to stress layout/paint/style recalc. Injected by script below.</p>
+    <div id="stress-buttons" class="bench-section"></div>
+    <div id="stress-cards" class="grid cols-5" style="gap: 0.5rem; margin-top: 1rem;"></div>
+    <div id="stress-badges" class="bench-section" style="margin-top: 1rem;"></div>
+    <div id="stress-form-rows" class="stack gap-2" style="margin-top: 1rem; max-width: 20rem;"></div>
+    <div id="stress-stats" class="grid cols-5" style="gap: 0.5rem; margin-top: 1rem;"></div>
+    <div id="stress-avatars" class="avatar-group" style="margin-top: 1rem;"></div>
+    <div class="table-wrap" style="margin-top: 1rem;">
+      <table id="stress-table">
+        <thead><tr><th>#</th><th>Name</th><th>Status</th><th>Value</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    (function stress() {
+      var root = document.getElementById('stress-buttons');
+      if (!root) return;
+      for (var i = 0; i < 100; i++) {
+        var b = document.createElement('button');
+        b.textContent = 'Btn ' + (i + 1);
+        if (i % 4 === 1) b.className = 'outline';
+        if (i % 4 === 2) b.className = 'ghost';
+        if (i % 4 === 3) b.className = 'sm';
+        root.appendChild(b);
+      }
+      var cards = document.getElementById('stress-cards');
+      for (var j = 0; j < 50; j++) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = '<header><h3>Card ' + (j + 1) + '</h3></header><p>Body</p>';
+        cards.appendChild(card);
+      }
+      var badges = document.getElementById('stress-badges');
+      for (var k = 0; k < 100; k++) {
+        var badge = document.createElement('span');
+        badge.className = 'badge' + (k % 5 === 0 ? ' success' : k % 5 === 1 ? ' danger' : '');
+        badge.textContent = 'Badge ' + (k + 1);
+        badges.appendChild(badge);
+      }
+      var rows = document.getElementById('stress-form-rows');
+      for (var r = 0; r < 50; r++) {
+        var row = document.createElement('div');
+        row.className = 'field';
+        row.innerHTML = '<label for="sf' + r + '">Field ' + (r + 1) + '</label><input id="sf' + r + '" type="text" placeholder="...">';
+        rows.appendChild(row);
+      }
+      var stats = document.getElementById('stress-stats');
+      for (var s = 0; s < 50; s++) {
+        var stat = document.createElement('div');
+        stat.className = 'stat';
+        stat.innerHTML = '<span class="stat-label">Stat ' + (s + 1) + '</span><span class="stat-value">' + (s * 10) + '</span>';
+        stats.appendChild(stat);
+      }
+      var avatars = document.getElementById('stress-avatars');
+      for (var a = 0; a < 30; a++) {
+        var av = document.createElement('span');
+        av.className = 'avatar';
+        av.setAttribute('aria-label', String.fromCharCode(65 + (a % 26)));
+        av.textContent = String.fromCharCode(65 + (a % 26));
+        avatars.appendChild(av);
+      }
+      var tbody = document.querySelector('#stress-table tbody');
+      for (var t = 0; t < 100; t++) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + (t + 1) + '</td><td>Row ' + (t + 1) + '</td><td>Active</td><td>' + (t * 2) + '</td>';
+        tbody.appendChild(tr);
+      }
+    })();
+  </script>
+</body>
+</html>

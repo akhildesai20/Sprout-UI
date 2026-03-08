@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baseline benchmark — plain HTML, no Sprout</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; font-size: 1rem; line-height: 1.5; margin: 0; padding: 1rem; max-width: 64rem; margin-inline: auto; }
+    h1, h2, h3 { margin: 0 0 0.5rem; }
+    p { margin: 0 0 0.75rem; }
+    nav { display: flex; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid #ccc; margin-bottom: 1rem; }
+    nav a { color: #333; }
+    aside { padding: 1rem; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    button, input, select, textarea { font: inherit; padding: 0.35rem 0.75rem; margin: 0.25rem 0; }
+    .card { border: 1px solid #ccc; border-radius: 4px; padding: 1rem; margin: 1rem 0; }
+    section { margin-bottom: 2rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Baseline benchmark</h1>
+    <p>Plain semantic HTML. No Sprout. Minimal styling. Use this page to measure browser cost of raw structure.</p>
+  </header>
+
+  <nav aria-label="Main">
+    <a href="#headings">Headings</a>
+    <a href="#forms">Forms</a>
+    <a href="#table">Table</a>
+    <a href="#card">Card</a>
+    <a href="#sidebar">Sidebar</a>
+  </nav>
+
+  <main>
+    <section id="headings">
+      <h2>Headings and text</h2>
+      <h3>Subheading</h3>
+      <p>Paragraph with <strong>strong</strong> and <small>small</small> text. No webfonts. System font stack only.</p>
+    </section>
+
+    <section id="forms">
+      <h2>Form controls</h2>
+      <p>
+        <label for="b1">Label</label><br>
+        <input id="b1" type="text" placeholder="Text input">
+      </p>
+      <p>
+        <button type="button">Button</button>
+        <button type="button">Secondary</button>
+      </p>
+      <p>
+        <label><input type="checkbox" checked> Checkbox</label>
+      </p>
+      <p>
+        <label><input type="radio" name="r" checked> Option A</label>
+        <label><input type="radio" name="r"> Option B</label>
+      </p>
+      <p>
+        <label for="b-select">Choose</label><br>
+        <select id="b-select">
+          <option>Select one</option>
+          <option>One</option>
+          <option>Two</option>
+        </select>
+      </p>
+      <p>
+        <label for="b2">Textarea</label><br>
+        <textarea id="b2" rows="3" placeholder="Textarea"></textarea>
+      </p>
+    </section>
+
+    <section id="table">
+      <h2>Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Row one</td><td>Active</td><td>2025-01-01</td></tr>
+          <tr><td>Row two</td><td>Pending</td><td>2025-01-02</td></tr>
+          <tr><td>Row three</td><td>Done</td><td>2025-01-03</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="card">
+      <h2>Card-like block</h2>
+      <div class="card">
+        <h3>Card title</h3>
+        <p>Card body content. Plain div with border and padding. No component library.</p>
+      </div>
+    </section>
+
+    <section id="sidebar">
+      <h2>Sidebar-like section</h2>
+      <aside>
+        <p><strong>Sidebar</strong></p>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li><a href="#">Link one</a></li>
+          <li><a href="#">Link two</a></li>
+          <li><a href="#">Link three</a></li>
+        </ul>
+      </aside>
+    </section>
+  </main>
+
+  <footer style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ccc;">
+    <p><small>Baseline — no JS, no Sprout, no external fonts.</small></p>
+  </footer>
+</body>
+</html>

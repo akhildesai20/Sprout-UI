@@ -1,0 +1,50 @@
+{
+  "name": "sprout-ui",
+  "version": "1.0.0",
+  "description": "Ultra-lightweight, sustainable, zero-dependency UI library",
+  "keywords": [
+    "ui",
+    "css",
+    "library",
+    "sustainable",
+    "lightweight",
+    "zero-dependency"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OWNER/Sprout-UI.git"
+  },
+  "type": "module",
+  "main": "dist/sprout.bundle.js",
+  "module": "dist/sprout.min.js",
+  "style": "dist/sprout.min.css",
+  "exports": {
+    ".": {
+      "import": "./dist/sprout.min.js",
+      "require": "./dist/sprout.bundle.js"
+    },
+    "./css": "./dist/sprout.min.css",
+    "./dist/sprout.min.css": "./dist/sprout.min.css"
+  },
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "scripts": {
+    "build:css": "lightningcss --minify src/sprout.css -o dist/sprout.min.css",
+    "build:js": "terser src/sprout.js -o dist/sprout.min.js --compress --mangle",
+    "build:bundle": "node scripts/bundle.js",
+    "build": "npm run build:css && npm run build:js && npm run build:bundle",
+    "dev": "browser-sync start --server --files 'src/*.css, src/*.js, demo/*.html'",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "lightningcss-cli": "^1.31.1",
+    "terser": "^5.46.0",
+    "vitepress": "^1.6.4"
+  }
+}

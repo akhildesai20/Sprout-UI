@@ -1,0 +1,2825 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprout UI — Component Demo</title>
+
+  <!--
+    CURSOR: Replace this <link> with your actual path:
+    <link rel="stylesheet" href="../src/sprout.css">
+    <script src="../src/sprout.js" type="module"></script>
+
+    This demo embeds minimal inline styles only to bridge gaps until
+    the full sprout.css is in place. All component markup is 100% spec-correct.
+  -->
+
+  <style>
+    /* ============================================================
+       SPROUT DESIGN TOKENS — mirrors src/sprout.css
+       ============================================================ */
+    :root, [data-theme="dark"] {
+      --sp-bg:           #0a0b0a;
+      --sp-surface:      #111311;
+      --sp-surface-2:    #1a1d1a;
+      --sp-surface-3:    #222622;
+      --sp-border:       #2e332e;
+      --sp-border-2:     #3d453d;
+      --sp-text:         #eaece8;
+      --sp-text-2:       #a8b0a4;
+      --sp-text-muted:   #636b60;
+      --sp-primary:      #4a7c59;
+      --sp-primary-fg:   #eaece8;
+      --sp-primary-hover:#56926a;
+      --sp-danger:       #8b3a3a;
+      --sp-danger-fg:    #f4c4c4;
+      --sp-warning:      #7a5c1e;
+      --sp-warning-fg:   #f5dfa0;
+      --sp-success:      #2e6644;
+      --sp-success-fg:   #b8f0cc;
+      --sp-info:         #2a4f7a;
+      --sp-info-fg:      #b8d8f5;
+      --sp-shadow-sm:    0 1px 3px rgba(0,0,0,0.4);
+      --sp-shadow-md:    0 4px 16px rgba(0,0,0,0.5);
+      --sp-radius-sm:    3px;
+      --sp-radius-md:    5px;
+      --sp-radius-lg:    8px;
+      --sp-radius-full:  9999px;
+      --sp-dur-fast:     120ms;
+      --sp-dur-base:     200ms;
+      --sp-ease:         cubic-bezier(0.2, 0, 0, 1);
+      --sp-font:         system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --sp-font-mono:    ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+      --sp-1:0.25rem; --sp-2:0.5rem; --sp-3:0.75rem; --sp-4:1rem;
+      --sp-5:1.25rem; --sp-6:1.5rem; --sp-8:2rem; --sp-10:2.5rem;
+      --sp-12:3rem;   --sp-16:4rem;
+      --sp-layer-dropdown:100; --sp-layer-modal:200;
+      --sp-layer-toast:300;    --sp-layer-tooltip:400;
+    }
+
+    [data-theme="light"] {
+      --sp-bg:#f4f5f2; --sp-surface:#eaece7; --sp-surface-2:#e0e3dc;
+      --sp-surface-3:#d5d9d0; --sp-border:#c2c9bb; --sp-border-2:#adb5a5;
+      --sp-text:#141614; --sp-text-2:#3d4539; --sp-text-muted:#6b7565;
+      --sp-primary:#3d6b4a; --sp-primary-fg:#f4f5f2; --sp-primary-hover:#4a7c59;
+      --sp-danger:#922e2e; --sp-danger-fg:#fff0f0;
+      --sp-warning:#7a5200; --sp-warning-fg:#fff8e6;
+      --sp-success:#1f5c34; --sp-success-fg:#eafff1;
+      --sp-info:#1e4a7a; --sp-info-fg:#eef5ff;
+      --sp-shadow-sm:0 1px 3px rgba(0,0,0,0.12);
+      --sp-shadow-md:0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    [data-theme="high-contrast"] {
+      --sp-bg:#000; --sp-surface:#0a0a0a; --sp-surface-2:#141414;
+      --sp-surface-3:#1e1e1e; --sp-border:#fff; --sp-border-2:#fff;
+      --sp-text:#fff; --sp-text-2:#eee; --sp-text-muted:#bbb;
+      --sp-primary:#00ff88; --sp-primary-fg:#000; --sp-primary-hover:#00cc6e;
+      --sp-danger:#ff4444; --sp-danger-fg:#000;
+      --sp-warning:#ffcc00; --sp-warning-fg:#000;
+      --sp-success:#00ff88; --sp-success-fg:#000;
+      --sp-info:#44aaff; --sp-info-fg:#000;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme]) {
+        --sp-bg:#f4f5f2; --sp-surface:#eaece7; --sp-surface-2:#e0e3dc;
+        --sp-surface-3:#d5d9d0; --sp-border:#c2c9bb; --sp-border-2:#adb5a5;
+        --sp-text:#141614; --sp-text-2:#3d4539; --sp-text-muted:#6b7565;
+        --sp-primary:#3d6b4a; --sp-primary-fg:#f4f5f2; --sp-primary-hover:#4a7c59;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================================
+       BASE RESET
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--sp-font);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      background: var(--sp-bg);
+      color: var(--sp-text);
+      min-height: 100vh;
+      transition: background var(--sp-dur-base) var(--sp-ease),
+                  color var(--sp-dur-base) var(--sp-ease);
+    }
+
+    a { color: var(--sp-primary); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: var(--sp-primary-hover); }
+    img, video { max-width: 100%; display: block; }
+
+    /* ============================================================
+       DEMO LAYOUT
+       ============================================================ */
+    .demo-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+    }
+
+    /* Top bar */
+    .demo-topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--sp-6);
+      height: 52px;
+      background: var(--sp-surface);
+      border-bottom: 1px solid var(--sp-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      gap: var(--sp-4);
+    }
+
+    .demo-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      text-decoration: none;
+      color: var(--sp-text);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      flex-shrink: 0;
+    }
+
+    .demo-logo-mark {
+      width: 22px; height: 22px;
+      background: var(--sp-primary);
+      border-radius: var(--sp-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--sp-primary-fg);
+      font-weight: 700;
+    }
+
+    .demo-version {
+      font-size: 0.6875rem;
+      color: var(--sp-text-muted);
+      background: var(--sp-surface-2);
+      border: 1px solid var(--sp-border);
+      padding: 1px 6px;
+      border-radius: var(--sp-radius-sm);
+      letter-spacing: 0.04em;
+    }
+
+    .demo-theme-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      flex-wrap: wrap;
+    }
+
+    .demo-theme-label {
+      font-size: 0.6875rem;
+      color: var(--sp-text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-right: var(--sp-1);
+    }
+
+    .theme-btn {
+      font-family: var(--sp-font);
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: var(--sp-radius-sm);
+      border: 1px solid var(--sp-border);
+      background: transparent;
+      color: var(--sp-text-2);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: border-color var(--sp-dur-fast) var(--sp-ease),
+                  color var(--sp-dur-fast) var(--sp-ease),
+                  background var(--sp-dur-fast) var(--sp-ease);
+    }
+    .theme-btn:hover { border-color: var(--sp-border-2); color: var(--sp-text); }
+    .theme-btn.active {
+      background: var(--sp-primary);
+      border-color: var(--sp-primary);
+      color: var(--sp-primary-fg);
+    }
+
+    /* Sidebar nav */
+    .demo-sidebar {
+      grid-row: 2;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+      overflow-y: auto;
+      background: var(--sp-surface);
+      border-right: 1px solid var(--sp-border);
+      padding: var(--sp-6) 0 var(--sp-8);
+      scrollbar-width: thin;
+      scrollbar-color: var(--sp-border) transparent;
+    }
+
+    .demo-nav-section {
+      padding: 0 var(--sp-4);
+      margin-bottom: var(--sp-6);
+    }
+
+    .demo-nav-heading {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sp-text-muted);
+      padding: 0 var(--sp-3);
+      margin-bottom: var(--sp-2);
+    }
+
+    .demo-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .demo-nav-list a {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      padding: 5px var(--sp-3);
+      font-size: 0.8125rem;
+      color: var(--sp-text-2);
+      text-decoration: none;
+      border-radius: var(--sp-radius-sm);
+      transition: background var(--sp-dur-fast) var(--sp-ease),
+                  color var(--sp-dur-fast) var(--sp-ease);
+    }
+    .demo-nav-list a:hover { background: var(--sp-surface-2); color: var(--sp-text); }
+    .demo-nav-list a.active { background: var(--sp-surface-3); color: var(--sp-primary); }
+
+    .nav-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--sp-border-2);
+      flex-shrink: 0;
+      transition: background var(--sp-dur-fast) var(--sp-ease);
+    }
+    .demo-nav-list a.active .nav-dot { background: var(--sp-primary); }
+
+    /* Main content */
+    .demo-content {
+      grid-row: 2;
+      padding: var(--sp-8) var(--sp-8) var(--sp-16);
+      max-width: 900px;
+    }
+
+    /* Hero */
+    .demo-hero {
+      margin-bottom: var(--sp-12);
+      padding-bottom: var(--sp-8);
+      border-bottom: 1px solid var(--sp-border);
+    }
+
+    .demo-hero h1 {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-3);
+    }
+
+    .demo-hero p {
+      font-size: 0.9375rem;
+      color: var(--sp-text-2);
+      max-width: 52ch;
+      margin-bottom: var(--sp-6);
+    }
+
+    .demo-stats {
+      display: flex;
+      gap: var(--sp-6);
+      flex-wrap: wrap;
+    }
+
+    .demo-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .demo-stat-item strong {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--sp-primary);
+    }
+
+    .demo-stat-item span {
+      font-size: 0.75rem;
+      color: var(--sp-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .demo-quickstart {
+      margin-top: var(--sp-6);
+    }
+
+    .demo-quickstart-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sp-text-muted);
+      margin-bottom: var(--sp-2);
+    }
+
+    /* Component sections */
+    .comp-section {
+      margin-bottom: var(--sp-12);
+      scroll-margin-top: 72px;
+    }
+
+    .comp-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--sp-4);
+      margin-bottom: var(--sp-4);
+      padding-bottom: var(--sp-3);
+      border-bottom: 1px solid var(--sp-border);
+    }
+
+    .comp-title {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--sp-text);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+
+    .comp-tag {
+      font-size: 0.6875rem;
+      font-family: var(--sp-font-mono);
+      color: var(--sp-text-muted);
+      background: var(--sp-surface-2);
+      border: 1px solid var(--sp-border);
+      padding: 1px 6px;
+      border-radius: var(--sp-radius-sm);
+      font-weight: 400;
+    }
+
+    .comp-hint {
+      font-size: 0.8125rem;
+      color: var(--sp-text-muted);
+      margin-bottom: var(--sp-5);
+    }
+
+    .comp-hint code {
+      font-family: var(--sp-font-mono);
+      font-size: 0.75rem;
+      background: var(--sp-surface-2);
+      border: 1px solid var(--sp-border);
+      padding: 1px 5px;
+      border-radius: var(--sp-radius-sm);
+      color: var(--sp-primary);
+    }
+
+    /* Preview + code panes */
+    .comp-panes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-4);
+      align-items: start;
+    }
+
+    .comp-panes.wide {
+      grid-template-columns: 1fr;
+    }
+
+    .pane-preview {
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+      padding: var(--sp-6);
+    }
+
+    .pane-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sp-text-muted);
+      margin-bottom: var(--sp-4);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .pane-label::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--sp-primary);
+      flex-shrink: 0;
+    }
+
+    .pane-code {
+      border-radius: var(--sp-radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pane-code pre {
+      margin: 0;
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+      padding: var(--sp-5) var(--sp-5);
+      font-family: var(--sp-font-mono);
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--sp-text-2);
+      overflow-x: auto;
+      tab-size: 2;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: var(--sp-3);
+      right: var(--sp-3);
+      font-family: var(--sp-font);
+      font-size: 0.6875rem;
+      padding: 3px 8px;
+      background: var(--sp-surface-2);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-sm);
+      color: var(--sp-text-muted);
+      cursor: pointer;
+      transition: color var(--sp-dur-fast) var(--sp-ease),
+                  border-color var(--sp-dur-fast) var(--sp-ease);
+      letter-spacing: 0.03em;
+    }
+    .copy-btn:hover { color: var(--sp-text); border-color: var(--sp-border-2); }
+    .copy-btn.copied { color: var(--sp-primary); border-color: var(--sp-primary); }
+
+    /* ============================================================
+       SPROUT COMPONENTS (subset inline until src/sprout.css is linked)
+       ============================================================ */
+
+    /* Buttons */
+    button, [role="button"] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      font-family: var(--sp-font);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1;
+      padding: 0 var(--sp-4);
+      height: 36px;
+      background: var(--sp-primary);
+      color: var(--sp-primary-fg);
+      border: 1px solid var(--sp-primary);
+      border-radius: var(--sp-radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--sp-dur-fast) var(--sp-ease),
+                  border-color var(--sp-dur-fast) var(--sp-ease),
+                  color var(--sp-dur-fast) var(--sp-ease);
+      white-space: nowrap;
+    }
+    button:hover { background: var(--sp-primary-hover); border-color: var(--sp-primary-hover); }
+    button:focus-visible { outline: 2px solid var(--sp-primary); outline-offset: 2px; }
+    button.outline { background: transparent; color: var(--sp-primary); }
+    button.outline:hover { background: var(--sp-primary); color: var(--sp-primary-fg); }
+    button.ghost { background: transparent; border-color: transparent; color: var(--sp-text-2); }
+    button.ghost:hover { background: var(--sp-surface-2); color: var(--sp-text); }
+    button.danger { background: var(--sp-danger); border-color: var(--sp-danger); color: var(--sp-danger-fg); }
+    button.success { background: var(--sp-success); border-color: var(--sp-success); color: var(--sp-success-fg); }
+    button.sm { font-size: 0.8125rem; height: 28px; padding: 0 var(--sp-3); }
+    button.lg { font-size: 1.0625rem; height: 44px; padding: 0 var(--sp-6); }
+    button.icon { width: 36px; padding: 0; }
+    button.sm.icon { width: 28px; }
+    button.full { width: 100%; }
+    button:disabled { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+    button.loading { pointer-events: none; }
+
+    /* Forms */
+    input, textarea, select {
+      font-family: var(--sp-font);
+      font-size: 0.9375rem;
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-md);
+      color: var(--sp-text);
+      padding: 0 var(--sp-3);
+      height: 36px;
+      width: 100%;
+      outline: none;
+      transition: border-color var(--sp-dur-fast) var(--sp-ease);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    textarea { height: auto; padding: var(--sp-3); resize: vertical; line-height: 1.6; min-height: 80px; }
+    input:focus, textarea:focus, select:focus { border-color: var(--sp-border-2); }
+    input::placeholder, textarea::placeholder { color: var(--sp-text-muted); }
+    input.valid { border-color: var(--sp-success); }
+    input.invalid { border-color: var(--sp-danger); }
+    input[type="range"] {
+      height: 4px; padding: 0; background: var(--sp-surface-3); cursor: pointer;
+      border: none; border-radius: var(--sp-radius-full);
+    }
+    input[type="checkbox"], input[type="radio"] {
+      width: 16px; height: 16px; padding: 0;
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-sm);
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+    }
+    input[type="radio"] { border-radius: 50%; }
+    input[type="checkbox"]:checked, input[type="radio"]:checked {
+      background: var(--sp-primary);
+      border-color: var(--sp-primary);
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7565' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--sp-3) center;
+      padding-right: var(--sp-8);
+    }
+    .field { display: flex; flex-direction: column; gap: var(--sp-2); }
+    label { font-size: 0.8125rem; color: var(--sp-text-2); font-weight: 500; }
+    fieldset { border: 1px solid var(--sp-border); border-radius: var(--sp-radius-md); padding: var(--sp-4); }
+    legend { font-size: 0.8125rem; font-weight: 600; padding: 0 var(--sp-2); color: var(--sp-text-2); }
+
+    /* Toggle */
+    label.toggle { display: inline-flex; align-items: center; gap: var(--sp-3); cursor: pointer; }
+    label.toggle input[type="checkbox"] {
+      width: 36px; height: 20px; padding: 0;
+      background: var(--sp-surface-3);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-full);
+      position: relative;
+      transition: background var(--sp-dur-base) var(--sp-ease),
+                  border-color var(--sp-dur-base) var(--sp-ease);
+    }
+    label.toggle input[type="checkbox"]::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 14px; height: 14px;
+      background: var(--sp-text-muted);
+      border-radius: 50%;
+      transition: transform var(--sp-dur-base) var(--sp-ease),
+                  background var(--sp-dur-base) var(--sp-ease);
+    }
+    label.toggle input[type="checkbox"]:checked {
+      background: var(--sp-primary);
+      border-color: var(--sp-primary);
+    }
+    label.toggle input[type="checkbox"]:checked::after {
+      transform: translateX(16px);
+      background: white;
+    }
+    label.toggle span { font-size: 0.8125rem; color: var(--sp-text-2); }
+
+    /* Alerts */
+    [role="alert"] {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      padding: var(--sp-3) var(--sp-4);
+      border: 1px solid var(--sp-border);
+      border-left: 3px solid var(--sp-border-2);
+      border-radius: var(--sp-radius-md);
+      font-size: 0.8125rem;
+      background: var(--sp-surface);
+      color: var(--sp-text-2);
+    }
+    [role="alert"].success { border-left-color: var(--sp-success); background: color-mix(in srgb, var(--sp-success) 8%, var(--sp-surface)); color: var(--sp-success-fg); }
+    [role="alert"].danger  { border-left-color: var(--sp-danger);  background: color-mix(in srgb, var(--sp-danger)  8%, var(--sp-surface)); color: var(--sp-danger-fg); }
+    [role="alert"].warning { border-left-color: var(--sp-warning); background: color-mix(in srgb, var(--sp-warning) 8%, var(--sp-surface)); color: var(--sp-warning-fg); }
+    [role="alert"].info    { border-left-color: var(--sp-info);    background: color-mix(in srgb, var(--sp-info)    8%, var(--sp-surface)); color: var(--sp-info-fg); }
+    [role="alert"][data-dismissed] { display: none; }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 2px 7px;
+      border-radius: var(--sp-radius-sm);
+      border: 1px solid var(--sp-border);
+      background: var(--sp-surface-2);
+      color: var(--sp-text-2);
+      white-space: nowrap;
+    }
+    .badge.success { background: color-mix(in srgb, var(--sp-success) 15%, transparent); border-color: var(--sp-success); color: var(--sp-success-fg); }
+    .badge.danger  { background: color-mix(in srgb, var(--sp-danger)  15%, transparent); border-color: var(--sp-danger);  color: var(--sp-danger-fg); }
+    .badge.warning { background: color-mix(in srgb, var(--sp-warning) 15%, transparent); border-color: var(--sp-warning); color: var(--sp-warning-fg); }
+    .badge.info    { background: color-mix(in srgb, var(--sp-info)    15%, transparent); border-color: var(--sp-info);    color: var(--sp-info-fg); }
+    .badge.outline { background: transparent; }
+    .badge.sm { font-size: 0.625rem; padding: 1px 5px; }
+    .badge.lg { font-size: 0.8125rem; padding: 3px 9px; }
+
+    /* Progress */
+    progress {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border: none;
+      border-radius: var(--sp-radius-full);
+      background: var(--sp-surface-3);
+      overflow: hidden;
+    }
+    progress::-webkit-progress-bar { background: var(--sp-surface-3); border-radius: var(--sp-radius-full); }
+    progress::-webkit-progress-value { background: var(--sp-primary); border-radius: var(--sp-radius-full); transition: width 0.4s var(--sp-ease); }
+    progress::-moz-progress-bar { background: var(--sp-primary); border-radius: var(--sp-radius-full); }
+    progress.success::-webkit-progress-value { background: var(--sp-success); }
+    progress.danger::-webkit-progress-value  { background: var(--sp-danger);  }
+    progress.warning::-webkit-progress-value { background: var(--sp-warning); }
+
+    /* Meter */
+    meter {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border: none;
+      background: var(--sp-surface-3);
+      border-radius: var(--sp-radius-full);
+      overflow: hidden;
+    }
+    meter::-webkit-meter-bar { background: var(--sp-surface-3); border-radius: var(--sp-radius-full); border: none; }
+    meter::-webkit-meter-optimum-value { background: var(--sp-success); }
+    meter::-webkit-meter-suboptimum-value { background: var(--sp-warning); }
+    meter::-webkit-meter-even-less-good-value { background: var(--sp-danger); }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid var(--sp-border-2);
+      border-top-color: var(--sp-primary);
+      border-radius: 50%;
+      animation: sp-spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    .spinner.sm { width: 14px; height: 14px; border-width: 1.5px; }
+    .spinner.lg { width: 28px; height: 28px; border-width: 3px; }
+    @keyframes sp-spin { to { transform: rotate(360deg); } }
+
+    /* Skeleton */
+    .skeleton {
+      background: var(--sp-surface-2);
+      border-radius: var(--sp-radius-md);
+      display: block;
+    }
+    .skeleton.circle { border-radius: 50%; }
+    .skeleton.animated {
+      background: linear-gradient(90deg, var(--sp-surface-2) 25%, var(--sp-surface-3) 50%, var(--sp-surface-2) 75%);
+      background-size: 200% 100%;
+      animation: sp-shimmer 1.6s ease-in-out infinite;
+    }
+    @keyframes sp-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* Card */
+    .card {
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+      padding: var(--sp-5);
+    }
+    .card > header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-3);
+      padding-bottom: var(--sp-3);
+      border-bottom: 1px solid var(--sp-border);
+    }
+    .card > footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--sp-2);
+      margin-top: var(--sp-4);
+      padding-top: var(--sp-4);
+      border-top: 1px solid var(--sp-border);
+    }
+    .card.flat { background: var(--sp-surface-2); border-color: transparent; }
+    .card.outline { background: transparent; }
+    .card.interactive { cursor: pointer; transition: border-color var(--sp-dur-fast) var(--sp-ease), background var(--sp-dur-fast) var(--sp-ease); }
+    .card.interactive:hover { border-color: var(--sp-border-2); background: var(--sp-surface-2); }
+
+    /* Avatar */
+    .avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: var(--sp-radius-full);
+      background: var(--sp-surface-3);
+      color: var(--sp-text-2);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--sp-border);
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .avatar.sm { width: 26px; height: 26px; font-size: 0.625rem; }
+    .avatar.lg { width: 48px; height: 48px; font-size: 1rem; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar[data-status]::after {
+      content: '';
+      position: absolute;
+      bottom: 1px; right: 1px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 2px solid var(--sp-bg);
+      background: var(--sp-text-muted);
+    }
+    .avatar[data-status="online"]::after { background: var(--sp-success-fg); }
+    .avatar-group { display: flex; }
+    .avatar-group .avatar { margin-left: -8px; border: 2px solid var(--sp-bg); }
+    .avatar-group .avatar:first-child { margin-left: 0; }
+
+    /* Stat */
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);
+      padding: var(--sp-4);
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+    }
+    .stat-label { font-size: 0.75rem; color: var(--sp-text-muted); letter-spacing: 0.04em; }
+    .stat-value { font-size: 1.625rem; font-weight: 700; color: var(--sp-text); line-height: 1.2; letter-spacing: -0.02em; }
+    .stat-change { font-size: 0.75rem; color: var(--sp-text-muted); }
+    .stat-change.positive { color: var(--sp-success-fg); }
+    .stat-change.negative { color: var(--sp-danger-fg); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead { background: var(--sp-surface-2); }
+    th { text-align: left; font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sp-text-muted); padding: var(--sp-3) var(--sp-4); font-weight: 600; border-bottom: 1px solid var(--sp-border); }
+    td { padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--sp-border); color: var(--sp-text-2); }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--sp-surface-2); }
+    .table-wrap { border: 1px solid var(--sp-border); border-radius: var(--sp-radius-lg); overflow: hidden; }
+
+    /* Details / Accordion */
+    details {
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-md);
+      background: var(--sp-surface);
+      overflow: hidden;
+    }
+    details + details { margin-top: var(--sp-2); }
+    details[open] { border-color: var(--sp-border-2); }
+    summary {
+      padding: var(--sp-3) var(--sp-4);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--sp-text);
+      user-select: none;
+      transition: background var(--sp-dur-fast) var(--sp-ease);
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-right: 1.5px solid var(--sp-text-muted);
+      border-bottom: 1.5px solid var(--sp-text-muted);
+      transform: rotate(45deg);
+      transition: transform var(--sp-dur-base) var(--sp-ease);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    details[open] summary::after { transform: rotate(-135deg); }
+    summary:hover { background: var(--sp-surface-2); }
+    details > *:not(summary) {
+      padding: var(--sp-4);
+      border-top: 1px solid var(--sp-border);
+      font-size: 0.9375rem;
+      color: var(--sp-text-2);
+    }
+
+    /* Dialog */
+    dialog {
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+      padding: 0;
+      color: var(--sp-text);
+      max-width: 560px;
+      width: 90vw;
+      box-shadow: var(--sp-shadow-md);
+    }
+    dialog::backdrop {
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(2px);
+    }
+    dialog > header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-4) var(--sp-5);
+      border-bottom: 1px solid var(--sp-border);
+      gap: var(--sp-3);
+    }
+    dialog > header h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+    .dialog-body { padding: var(--sp-5); }
+    dialog > footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--sp-2);
+      padding: var(--sp-4) var(--sp-5);
+      border-top: 1px solid var(--sp-border);
+    }
+    dialog.sm { max-width: 400px; }
+    dialog.lg { max-width: 800px; }
+
+    /* Tooltip */
+    [data-tooltip] { position: relative; }
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--sp-surface-3);
+      border: 1px solid var(--sp-border);
+      color: var(--sp-text-2);
+      font-size: 0.75rem;
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--sp-radius-sm);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--sp-dur-fast) var(--sp-ease);
+      z-index: var(--sp-layer-tooltip);
+    }
+    [data-tooltip]:hover::after,
+    [data-tooltip]:focus-visible::after { opacity: 1; }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding: 0 var(--sp-5);
+      height: 48px;
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+    }
+    nav .brand {
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--sp-text);
+      text-decoration: none;
+      flex-shrink: 0;
+      margin-right: var(--sp-2);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+      flex: 1;
+    }
+    nav ul a {
+      font-size: 0.875rem;
+      color: var(--sp-text-2);
+      text-decoration: none;
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--sp-radius-sm);
+      transition: background var(--sp-dur-fast) var(--sp-ease), color var(--sp-dur-fast) var(--sp-ease);
+    }
+    nav ul a:hover { background: var(--sp-surface-2); color: var(--sp-text); }
+    nav ul a.active { background: var(--sp-surface-2); color: var(--sp-primary); }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      list-style: none;
+      gap: 0;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .breadcrumb li { display: flex; align-items: center; font-size: 0.8125rem; }
+    .breadcrumb li + li::before {
+      content: '/';
+      color: var(--sp-text-muted);
+      margin: 0 var(--sp-2);
+    }
+    .breadcrumb a { color: var(--sp-text-2); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--sp-primary); }
+    .breadcrumb [aria-current="page"] { color: var(--sp-text-muted); }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      list-style: none;
+      gap: var(--sp-1);
+      align-items: center;
+    }
+    .pagination a, .pagination span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 32px;
+      padding: 0 var(--sp-2);
+      font-size: 0.8125rem;
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-sm);
+      color: var(--sp-text-2);
+      text-decoration: none;
+      transition: background var(--sp-dur-fast) var(--sp-ease), border-color var(--sp-dur-fast) var(--sp-ease);
+    }
+    .pagination a:hover { background: var(--sp-surface-2); border-color: var(--sp-border-2); color: var(--sp-text); }
+    .pagination [aria-current="page"] { background: var(--sp-primary); border-color: var(--sp-primary); color: var(--sp-primary-fg); }
+    .pagination span { border-color: transparent; color: var(--sp-text-muted); }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-lg);
+      padding: var(--sp-4);
+      width: 200px;
+      flex-shrink: 0;
+    }
+    .sidebar-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sp-text-muted);
+      padding: 0 var(--sp-3);
+      margin-bottom: var(--sp-1);
+      margin-top: var(--sp-4);
+    }
+    .sidebar-label:first-child { margin-top: 0; }
+    .sidebar nav { display: flex; flex-direction: column; gap: 1px; height: auto; background: none; border: none; padding: 0; border-radius: 0; }
+    .sidebar nav ul { flex-direction: column; gap: 1px; }
+    .sidebar nav ul a {
+      display: flex; align-items: center; padding: 5px var(--sp-3);
+      font-size: 0.8125rem; color: var(--sp-text-2); text-decoration: none;
+      border-radius: var(--sp-radius-sm);
+      transition: background var(--sp-dur-fast) var(--sp-ease), color var(--sp-dur-fast) var(--sp-ease);
+    }
+    .sidebar nav ul a:hover { background: var(--sp-surface-2); color: var(--sp-text); }
+    .sidebar nav ul a.active { background: var(--sp-surface-3); color: var(--sp-primary); }
+
+    /* Code block */
+    pre {
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-md);
+      padding: var(--sp-4);
+      font-family: var(--sp-font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      color: var(--sp-text-2);
+    }
+    code {
+      font-family: var(--sp-font-mono);
+      font-size: 0.8125rem;
+      background: var(--sp-surface-2);
+      border: 1px solid var(--sp-border);
+      padding: 1px 5px;
+      border-radius: var(--sp-radius-sm);
+      color: var(--sp-primary);
+    }
+    pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+
+    /* HR / Divider */
+    hr {
+      border: none;
+      border-top: 1px solid var(--sp-border);
+      margin: var(--sp-4) 0;
+    }
+    hr.label {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+    hr.label::before, hr.label::after {
+      content: '';
+      flex: 1;
+      border-top: 1px solid var(--sp-border);
+    }
+    hr.label::before { content: ''; }
+    hr.label[data-label]::after { content: ''; }
+    .divider.vertical {
+      width: 1px;
+      background: var(--sp-border);
+      align-self: stretch;
+      margin: 0 var(--sp-3);
+    }
+
+    /* Layout helpers */
+    .stack { display: flex; flex-direction: column; gap: var(--sp-4); }
+    .stack.gap-1 { gap: var(--sp-1); }
+    .stack.gap-2 { gap: var(--sp-2); }
+    .stack.gap-6 { gap: var(--sp-6); }
+    .stack.gap-8 { gap: var(--sp-8); }
+    .cluster { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; }
+    .cluster.gap-2 { gap: var(--sp-2); }
+    .grid { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(min(240px,100%),1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2,1fr); }
+    .grid.cols-3 { grid-template-columns: repeat(3,1fr); }
+
+    /* Typography */
+    h1 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+    h2 { font-size: clamp(1.25rem, 2vw, 1.625rem); font-weight: 700; line-height: 1.2; }
+    h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
+    h4 { font-size: 1rem; font-weight: 600; }
+    p { margin-bottom: var(--sp-4); }
+    p:last-child { margin-bottom: 0; }
+    small { font-size: 0.8125rem; color: var(--sp-text-muted); }
+    blockquote {
+      border-left: 3px solid var(--sp-primary);
+      padding-left: var(--sp-4);
+      margin: var(--sp-4) 0;
+      color: var(--sp-text-2);
+      font-style: italic;
+    }
+    kbd {
+      font-family: var(--sp-font-mono);
+      font-size: 0.75rem;
+      border: 1px solid var(--sp-border-2);
+      border-radius: var(--sp-radius-sm);
+      padding: 1px 6px;
+      background: var(--sp-surface-2);
+      color: var(--sp-text-2);
+    }
+
+    /* Web component placeholders (until sprout.js defines them) */
+    sp-tab-list {
+      display: flex;
+      border-bottom: 1px solid var(--sp-border);
+      gap: 0;
+      margin-bottom: var(--sp-4);
+    }
+    sp-tab {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--sp-2) var(--sp-4);
+      font-size: 0.875rem;
+      color: var(--sp-text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color var(--sp-dur-fast) var(--sp-ease), border-color var(--sp-dur-fast) var(--sp-ease);
+    }
+    sp-tab:hover { color: var(--sp-text-2); }
+    sp-tab[aria-selected="true"] { color: var(--sp-primary); border-bottom-color: var(--sp-primary); }
+    sp-panel { display: block; }
+    sp-panel:not([aria-hidden="false"]) { display: none; }
+
+    sp-dropdown { position: relative; display: inline-block; }
+    sp-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 160px;
+      background: var(--sp-surface);
+      border: 1px solid var(--sp-border);
+      border-radius: var(--sp-radius-md);
+      padding: var(--sp-2);
+      box-shadow: var(--sp-shadow-sm);
+      z-index: var(--sp-layer-dropdown);
+    }
+    sp-dropdown[open] sp-menu { display: block; }
+    sp-menu-item {
+      display: block;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--sp-radius-sm);
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--sp-text-2);
+      transition: background var(--sp-dur-fast) var(--sp-ease), color var(--sp-dur-fast) var(--sp-ease);
+    }
+    sp-menu-item:hover { background: var(--sp-surface-2); color: var(--sp-text); }
+    sp-menu-item.danger { color: var(--sp-danger-fg); }
+    sp-menu-item.danger:hover { background: color-mix(in srgb, var(--sp-danger) 15%, var(--sp-surface-2)); }
+
+    /* Toast container */
+    #sp-toast-container {
+      position: fixed;
+      top: var(--sp-4);
+      right: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+      z-index: var(--sp-layer-toast);
+      pointer-events: none;
+    }
+    .sp-toast {
+      pointer-events: all;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--sp-surface-3);
+      border: 1px solid var(--sp-border-2);
+      border-radius: var(--sp-radius-md);
+      box-shadow: var(--sp-shadow-md);
+      font-size: 0.875rem;
+      color: var(--sp-text);
+      min-width: 240px;
+      max-width: 380px;
+      animation: sp-toast-in var(--sp-dur-base) var(--sp-ease) both;
+    }
+    .sp-toast.success { border-left: 3px solid var(--sp-success); }
+    .sp-toast.danger  { border-left: 3px solid var(--sp-danger); }
+    .sp-toast.warning { border-left: 3px solid var(--sp-warning); }
+    .sp-toast.info    { border-left: 3px solid var(--sp-info); }
+    .sp-toast.exiting { animation: sp-toast-out var(--sp-dur-base) var(--sp-ease) both; }
+    @keyframes sp-toast-in  { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+    @keyframes sp-toast-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(12px); } }
+    .sp-toast-close {
+      background: none; border: none; padding: 2px; width: auto; height: auto;
+      color: var(--sp-text-muted); cursor: pointer; flex-shrink: 0; border-radius: var(--sp-radius-sm);
+      font-size: 0.875rem; line-height: 1;
+    }
+
+    /* Demo-only helpers */
+    .demo-section-sep {
+      display: block;
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sp-text-muted);
+      padding: var(--sp-3) 0 var(--sp-1);
+      border-bottom: 1px solid var(--sp-border);
+      margin-bottom: var(--sp-8);
+      margin-top: var(--sp-4);
+    }
+
+    @media (max-width: 768px) {
+      .demo-layout { grid-template-columns: 1fr; }
+      .demo-sidebar { display: none; }
+      .demo-content { padding: var(--sp-6) var(--sp-4); }
+      .comp-panes { grid-template-columns: 1fr; }
+      .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-layout">
+
+  <!-- TOP BAR -->
+  <header class="demo-topbar">
+    <a class="demo-logo" href="#">
+      <span class="demo-logo-mark">S</span>
+      <span>Sprout UI</span>
+      <span class="demo-version">v1.0</span>
+    </a>
+
+    <div class="demo-theme-bar">
+      <span class="demo-theme-label">Theme</span>
+      <button class="theme-btn active" data-theme-set="dark">Dark</button>
+      <button class="theme-btn" data-theme-set="light">Light</button>
+      <button class="theme-btn" data-theme-set="high-contrast">High contrast</button>
+      <button class="theme-btn" data-theme-set="">Auto</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR NAV -->
+  <nav class="demo-sidebar" aria-label="Components">
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Getting started</p>
+      <ul class="demo-nav-list">
+        <li><a href="#hero" class="active"><span class="nav-dot"></span>Overview</a></li>
+        <li><a href="#quickstart"><span class="nav-dot"></span>Quick start</a></li>
+      </ul>
+    </div>
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Foundation</p>
+      <ul class="demo-nav-list">
+        <li><a href="#typography"><span class="nav-dot"></span>Typography</a></li>
+        <li><a href="#layout"><span class="nav-dot"></span>Layout</a></li>
+        <li><a href="#buttons"><span class="nav-dot"></span>Buttons</a></li>
+      </ul>
+    </div>
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Forms</p>
+      <ul class="demo-nav-list">
+        <li><a href="#forms"><span class="nav-dot"></span>Inputs & Fields</a></li>
+        <li><a href="#toggle"><span class="nav-dot"></span>Toggle & Range</a></li>
+      </ul>
+    </div>
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Feedback</p>
+      <ul class="demo-nav-list">
+        <li><a href="#alerts"><span class="nav-dot"></span>Alerts</a></li>
+        <li><a href="#badges"><span class="nav-dot"></span>Badges</a></li>
+        <li><a href="#toast"><span class="nav-dot"></span>Toast</a></li>
+        <li><a href="#progress"><span class="nav-dot"></span>Progress & Meter</a></li>
+        <li><a href="#spinner"><span class="nav-dot"></span>Spinner</a></li>
+        <li><a href="#skeleton"><span class="nav-dot"></span>Skeleton</a></li>
+      </ul>
+    </div>
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Navigation</p>
+      <ul class="demo-nav-list">
+        <li><a href="#tabs"><span class="nav-dot"></span>Tabs</a></li>
+        <li><a href="#navbar"><span class="nav-dot"></span>Navbar</a></li>
+        <li><a href="#breadcrumb"><span class="nav-dot"></span>Breadcrumb</a></li>
+        <li><a href="#pagination"><span class="nav-dot"></span>Pagination</a></li>
+        <li><a href="#sidebar"><span class="nav-dot"></span>Sidebar</a></li>
+      </ul>
+    </div>
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Overlays</p>
+      <ul class="demo-nav-list">
+        <li><a href="#accordion"><span class="nav-dot"></span>Accordion</a></li>
+        <li><a href="#modal"><span class="nav-dot"></span>Modal</a></li>
+        <li><a href="#dropdown"><span class="nav-dot"></span>Dropdown</a></li>
+        <li><a href="#tooltip"><span class="nav-dot"></span>Tooltip</a></li>
+      </ul>
+    </div>
+    <div class="demo-nav-section">
+      <p class="demo-nav-heading">Display</p>
+      <ul class="demo-nav-list">
+        <li><a href="#table"><span class="nav-dot"></span>Table</a></li>
+        <li><a href="#card"><span class="nav-dot"></span>Card</a></li>
+        <li><a href="#avatar"><span class="nav-dot"></span>Avatar</a></li>
+        <li><a href="#stat"><span class="nav-dot"></span>Stat</a></li>
+        <li><a href="#code"><span class="nav-dot"></span>Code block</a></li>
+        <li><a href="#divider"><span class="nav-dot"></span>Divider</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="demo-content">
+
+    <!-- HERO -->
+    <div class="demo-hero" id="hero">
+      <h1>Sprout UI</h1>
+      <p>A lightweight, sustainable, zero-dependency component library. Drop in two files — done. No build tools, no Node.js, no framework.</p>
+      <div class="demo-stats">
+        <div class="demo-stat-item"><strong>&lt; 13KB</strong><span>Total gzipped</span></div>
+        <div class="demo-stat-item"><strong>0</strong><span>Dependencies</span></div>
+        <div class="demo-stat-item"><strong>27</strong><span>Components</span></div>
+        <div class="demo-stat-item"><strong>4</strong><span>Built-in themes</span></div>
+      </div>
+    </div>
+
+    <!-- QUICK START -->
+    <section class="comp-section" id="quickstart">
+      <div class="comp-header">
+        <span class="comp-title">Quick start</span>
+      </div>
+      <p class="comp-hint">Three ways to import. Pick the one that fits your project.</p>
+      <div class="stack gap-4">
+        <div>
+          <p style="font-size:0.75rem; color:var(--sp-text-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:var(--sp-2);">CDN — two files</p>
+          <div class="pane-code">
+            <pre><code>&lt;link rel="stylesheet" href="sprout.min.css"&gt;
+&lt;script src="sprout.min.js" defer&gt;&lt;/script&gt;</code></pre>
+            <button class="copy-btn" data-copy-target="qs-cdn">Copy</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.75rem; color:var(--sp-text-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:var(--sp-2);">Single script drop-in</p>
+          <div class="pane-code">
+            <pre><code>&lt;script src="sprout.bundle.js" defer&gt;&lt;/script&gt;</code></pre>
+            <button class="copy-btn" data-copy-target="qs-bundle">Copy</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.75rem; color:var(--sp-text-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:var(--sp-2);">npm</p>
+          <div class="pane-code">
+            <pre><code>npm install sprout-ui
+
+import 'sprout-ui/dist/sprout.min.css';
+import Sprout from 'sprout-ui';</code></pre>
+            <button class="copy-btn" data-copy-target="qs-npm">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <span class="demo-section-sep">Foundation</span>
+
+    <!-- TYPOGRAPHY -->
+    <section class="comp-section" id="typography">
+      <div class="comp-header">
+        <span class="comp-title">Typography <span class="comp-tag">semantic</span></span>
+      </div>
+      <p class="comp-hint">Style directly on <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;code&gt;</code>. No classes needed. System font stack — zero network cost.</p>
+      <div class="comp-panes wide">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <h1 style="margin-bottom:var(--sp-2)">Heading 1</h1>
+          <h2 style="margin-bottom:var(--sp-2)">Heading 2</h2>
+          <h3 style="margin-bottom:var(--sp-4)">Heading 3</h3>
+          <p>Body text with <strong>bold</strong>, <code>inline code</code>, and <small>small/muted text</small>.</p>
+          <blockquote>A blockquote with a primary-coloured left border.</blockquote>
+          <p style="margin-bottom:0">Press <kbd>⌘</kbd> + <kbd>K</kbd> to open the palette.</p>
+        </div>
+        <div class="pane-code" style="margin-top:var(--sp-4)">
+          <pre><code>&lt;h1&gt;Heading 1&lt;/h1&gt;
+&lt;h2&gt;Heading 2&lt;/h2&gt;
+&lt;p&gt;Body with &lt;strong&gt;bold&lt;/strong&gt; and &lt;code&gt;code&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote&gt;A quote.&lt;/blockquote&gt;
+&lt;kbd&gt;⌘&lt;/kbd&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAYOUT -->
+    <section class="comp-section" id="layout">
+      <div class="comp-header">
+        <span class="comp-title">Layout <span class="comp-tag">.container .grid .stack .cluster</span></span>
+      </div>
+      <p class="comp-hint">Four layout primitives. <code>.stack</code> = vertical, <code>.cluster</code> = horizontal wrapping, <code>.grid</code> = CSS grid, <code>.container</code> = max-width wrapper.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <div class="cluster gap-2">
+              <span class="badge">Cluster item</span>
+              <span class="badge info">Another</span>
+              <span class="badge success">One more</span>
+            </div>
+            <div class="grid cols-2" style="max-width:100%">
+              <div class="card flat" style="text-align:center;padding:var(--sp-3)"><small>Grid col 1</small></div>
+              <div class="card flat" style="text-align:center;padding:var(--sp-3)"><small>Grid col 2</small></div>
+            </div>
+            <div class="card flat" style="text-align:center;padding:var(--sp-3)"><small>Stack item</small></div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;div class="stack gap-4"&gt;
+  &lt;div class="cluster"&gt;
+    &lt;span&gt;Item&lt;/span&gt;
+    &lt;span&gt;Item&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="grid cols-2"&gt;
+    &lt;div&gt;Col 1&lt;/div&gt;
+    &lt;div&gt;Col 2&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="comp-section" id="buttons">
+      <div class="comp-header">
+        <span class="comp-title">Buttons <span class="comp-tag">semantic</span></span>
+      </div>
+      <p class="comp-hint"><code>&lt;button&gt;</code> is primary by default. Variants via single class: <code>outline</code>, <code>ghost</code>, <code>danger</code>, <code>success</code>. Sizes: <code>sm</code>, <code>lg</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <div class="cluster gap-2">
+              <button>Primary</button>
+              <button class="outline">Outline</button>
+              <button class="ghost">Ghost</button>
+            </div>
+            <div class="cluster gap-2">
+              <button class="danger">Danger</button>
+              <button class="success">Success</button>
+              <button disabled>Disabled</button>
+            </div>
+            <div class="cluster gap-2">
+              <button class="sm">Small</button>
+              <button>Default</button>
+              <button class="lg">Large</button>
+              <button class="icon" aria-label="Close">✕</button>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;button&gt;Primary&lt;/button&gt;
+&lt;button class="outline"&gt;Outline&lt;/button&gt;
+&lt;button class="ghost"&gt;Ghost&lt;/button&gt;
+&lt;button class="danger"&gt;Delete&lt;/button&gt;
+&lt;button class="success"&gt;Confirm&lt;/button&gt;
+&lt;button class="sm"&gt;Small&lt;/button&gt;
+&lt;button class="lg"&gt;Large&lt;/button&gt;
+&lt;button class="icon" aria-label="X"&gt;✕&lt;/button&gt;
+&lt;button disabled&gt;Disabled&lt;/button&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <span class="demo-section-sep">Forms</span>
+
+    <!-- FORMS -->
+    <section class="comp-section" id="forms">
+      <div class="comp-header">
+        <span class="comp-title">Inputs & Fields <span class="comp-tag">semantic</span></span>
+      </div>
+      <p class="comp-hint">Wrap with <code>.field</code> to stack label + input + hint. States: <code>.valid</code>, <code>.invalid</code> on input. Works with <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <div class="field">
+              <label for="d-email">Email address</label>
+              <input type="email" id="d-email" placeholder="you@example.com">
+              <small>We never share your email.</small>
+            </div>
+            <div class="field">
+              <label for="d-select">Plan</label>
+              <select id="d-select">
+                <option>Free tier</option>
+                <option>Pro — $9/mo</option>
+                <option>Team — $29/mo</option>
+              </select>
+            </div>
+            <div class="grid cols-2" style="gap:var(--sp-3)">
+              <div class="field">
+                <label for="d-valid">Valid</label>
+                <input type="text" id="d-valid" class="valid" value="john@acme.co">
+              </div>
+              <div class="field">
+                <label for="d-invalid">Invalid</label>
+                <input type="text" id="d-invalid" class="invalid" value="not-an-email">
+              </div>
+            </div>
+            <fieldset>
+              <legend>Billing address</legend>
+              <div class="field">
+                <label for="d-name">Name on card</label>
+                <input type="text" id="d-name" placeholder="Jane Doe">
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;div class="field"&gt;
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input type="email" id="email"
+    placeholder="you@example.com"&gt;
+  &lt;small&gt;Hint text.&lt;/small&gt;
+&lt;/div&gt;
+
+&lt;input class="valid" value="ok"&gt;
+&lt;input class="invalid" value="bad"&gt;
+
+&lt;fieldset&gt;
+  &lt;legend&gt;Section&lt;/legend&gt;
+  &lt;div class="field"&gt;...&lt;/div&gt;
+&lt;/fieldset&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOGGLE & RANGE -->
+    <section class="comp-section" id="toggle">
+      <div class="comp-header">
+        <span class="comp-title">Toggle & Range <span class="comp-tag">CSS-only</span></span>
+      </div>
+      <p class="comp-hint">Toggle is a <code>label.toggle</code> wrapping a checkbox — zero JS. Checkboxes and radios styled via <code>appearance: none</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <div class="stack gap-2">
+              <label class="toggle"><input type="checkbox" checked><span>Dark mode enabled</span></label>
+              <label class="toggle"><input type="checkbox"><span>Email notifications</span></label>
+              <label class="toggle"><input type="checkbox" checked><span>Auto-save</span></label>
+            </div>
+            <div class="stack gap-2">
+              <label><input type="checkbox" checked style="margin-right:var(--sp-2)"> Remember me</label>
+              <label><input type="radio" name="plan" checked style="margin-right:var(--sp-2)"> Free</label>
+              <label><input type="radio" name="plan" style="margin-right:var(--sp-2)"> Pro</label>
+            </div>
+            <div class="field">
+              <label>Volume — <span id="range-val">50</span>%</label>
+              <input type="range" min="0" max="100" value="50" id="d-range">
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;!-- Toggle (CSS-only) --&gt;
+&lt;label class="toggle"&gt;
+  &lt;input type="checkbox"&gt;
+  &lt;span&gt;Enable feature&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Checkbox --&gt;
+&lt;label&gt;
+  &lt;input type="checkbox"&gt; Option
+&lt;/label&gt;
+
+&lt;!-- Range --&gt;
+&lt;input type="range" min="0"
+  max="100" value="50"&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <span class="demo-section-sep">Feedback</span>
+
+    <!-- ALERTS -->
+    <section class="comp-section" id="alerts">
+      <div class="comp-header">
+        <span class="comp-title">Alerts <span class="comp-tag">role="alert"</span></span>
+      </div>
+      <p class="comp-hint">Use <code>role="alert"</code> — no class needed for default. Add <code>data-dismissible</code> + a close button for dismissible alerts (JS handles it).</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-2">
+            <div role="alert">Default alert message</div>
+            <div role="alert" class="success">Your changes have been saved.</div>
+            <div role="alert" class="warning">Session expires in 5 minutes.</div>
+            <div role="alert" class="danger">Failed to connect. Check your network.</div>
+            <div role="alert" class="info" data-dismissible>
+              <span>A new version is available.</span>
+              <button class="ghost icon sm" data-dismiss-alert aria-label="Dismiss">✕</button>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;div role="alert"&gt;Default&lt;/div&gt;
+&lt;div role="alert" class="success"&gt;
+  Saved.
+&lt;/div&gt;
+&lt;div role="alert" class="danger"&gt;
+  Error.
+&lt;/div&gt;
+
+&lt;!-- Dismissible --&gt;
+&lt;div role="alert" class="info"
+  data-dismissible&gt;
+  &lt;span&gt;Update available.&lt;/span&gt;
+  &lt;button class="ghost icon sm"
+    data-dismiss-alert
+    aria-label="Dismiss"&gt;✕&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BADGES -->
+    <section class="comp-section" id="badges">
+      <div class="comp-header">
+        <span class="comp-title">Badges <span class="comp-tag">.badge</span></span>
+      </div>
+      <p class="comp-hint">Variants: <code>success</code>, <code>danger</code>, <code>warning</code>, <code>info</code>, <code>outline</code>. Sizes: <code>sm</code>, <code>lg</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-3">
+            <div class="cluster gap-2">
+              <span class="badge">Default</span>
+              <span class="badge success">Active</span>
+              <span class="badge danger">Error</span>
+              <span class="badge warning">Pending</span>
+              <span class="badge info">Beta</span>
+              <span class="badge outline">Draft</span>
+            </div>
+            <div class="cluster gap-2">
+              <span class="badge sm">small</span>
+              <span class="badge">default</span>
+              <span class="badge lg">large</span>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;span class="badge"&gt;Default&lt;/span&gt;
+&lt;span class="badge success"&gt;Active&lt;/span&gt;
+&lt;span class="badge danger"&gt;Error&lt;/span&gt;
+&lt;span class="badge warning"&gt;Pending&lt;/span&gt;
+&lt;span class="badge info"&gt;Beta&lt;/span&gt;
+&lt;span class="badge outline"&gt;Draft&lt;/span&gt;
+&lt;span class="badge sm"&gt;small&lt;/span&gt;
+&lt;span class="badge lg"&gt;large&lt;/span&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOAST -->
+    <section class="comp-section" id="toast">
+      <div class="comp-header">
+        <span class="comp-title">Toast <span class="comp-tag">Sprout.toast()</span></span>
+      </div>
+      <p class="comp-hint">JS API only — no HTML markup needed. Sprout injects the container automatically. Stacks, auto-dismisses, and supports position options.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview — click to trigger</p>
+          <div class="cluster gap-2">
+            <button id="t-default">Default toast</button>
+            <button class="outline" id="t-success">Success</button>
+            <button class="outline" id="t-danger">Danger</button>
+            <button class="outline" id="t-info">Info</button>
+            <button class="ghost" id="t-persist">Persistent</button>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>// Default
+Sprout.toast('File saved.');
+
+// With type
+Sprout.toast('Something went wrong.', {
+  type: 'danger'
+});
+
+// With duration + position
+Sprout.toast('Update available.', {
+  type: 'info',
+  duration: 5000,
+  position: 'top-right'
+});
+
+// Persistent (duration: 0)
+Sprout.toast('Action needed.', {
+  type: 'warning',
+  duration: 0
+});</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS & METER -->
+    <section class="comp-section" id="progress">
+      <div class="comp-header">
+        <span class="comp-title">Progress & Meter <span class="comp-tag">semantic</span></span>
+      </div>
+      <p class="comp-hint"><code>&lt;progress&gt;</code> for task completion. <code>&lt;meter&gt;</code> for scalar values with low/high thresholds. Both styled directly — no classes needed.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <div class="field">
+              <label>Default — 60%</label>
+              <progress value="60" max="100"></progress>
+            </div>
+            <div class="field">
+              <label>Success — 90%</label>
+              <progress value="90" max="100" class="success"></progress>
+            </div>
+            <div class="field">
+              <label>Danger — 95%</label>
+              <progress value="95" max="100" class="danger"></progress>
+            </div>
+            <div class="field">
+              <label>Indeterminate</label>
+              <progress></progress>
+            </div>
+            <div class="field">
+              <label>Meter — 7/10 (optimum: 9)</label>
+              <meter value="7" min="0" max="10" low="3" high="8" optimum="9">7/10</meter>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;!-- Determinate --&gt;
+&lt;progress value="60" max="100"&gt;
+&lt;/progress&gt;
+
+&lt;!-- Variants --&gt;
+&lt;progress value="90" max="100"
+  class="success"&gt;&lt;/progress&gt;
+
+&lt;!-- Indeterminate --&gt;
+&lt;progress&gt;&lt;/progress&gt;
+
+&lt;!-- Meter with thresholds --&gt;
+&lt;meter value="7" min="0" max="10"
+  low="3" high="8" optimum="9"&gt;
+  7/10
+&lt;/meter&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPINNER -->
+    <section class="comp-section" id="spinner">
+      <div class="comp-header">
+        <span class="comp-title">Spinner <span class="comp-tag">CSS-only</span></span>
+      </div>
+      <p class="comp-hint">Pure CSS via <code>border</code> + <code>transform: rotate()</code>. Always add <code>role="status"</code> and <code>aria-label</code> for accessibility.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="cluster gap-4">
+            <span class="spinner sm" role="status" aria-label="Loading"></span>
+            <span class="spinner" role="status" aria-label="Loading"></span>
+            <span class="spinner lg" role="status" aria-label="Loading"></span>
+            <button class="outline loading" style="pointer-events:none">
+              <span class="spinner sm"></span> Saving…
+            </button>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;span class="spinner sm"
+  role="status"
+  aria-label="Loading"&gt;
+&lt;/span&gt;
+
+&lt;span class="spinner lg"
+  role="status"
+  aria-label="Loading"&gt;
+&lt;/span&gt;
+
+&lt;!-- Inside button --&gt;
+&lt;button class="loading"&gt;
+  &lt;span class="spinner sm"&gt;&lt;/span&gt;
+  Saving…
+&lt;/button&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKELETON -->
+    <section class="comp-section" id="skeleton">
+      <div class="comp-header">
+        <span class="comp-title">Skeleton <span class="comp-tag">CSS-only</span></span>
+      </div>
+      <p class="comp-hint">Shimmer is <strong>off by default</strong> (eco). Add <code>.animated</code> to opt in. Use <code>.circle</code> for avatar placeholders.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-3">
+            <div style="display:flex;gap:var(--sp-3);align-items:center">
+              <div class="skeleton circle" style="width:40px;height:40px;flex-shrink:0"></div>
+              <div class="stack gap-2" style="flex:1">
+                <div class="skeleton" style="height:0.875rem;width:55%"></div>
+                <div class="skeleton" style="height:0.875rem;width:35%"></div>
+              </div>
+            </div>
+            <div class="skeleton" style="height:0.875rem;width:90%"></div>
+            <div class="skeleton" style="height:0.875rem;width:75%"></div>
+            <div class="skeleton animated" style="height:0.875rem;width:60%"></div>
+            <div class="skeleton animated" style="height:80px;width:100%"></div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;!-- Static (eco default) --&gt;
+&lt;div class="skeleton"
+  style="height:1rem;width:60%"&gt;
+&lt;/div&gt;
+
+&lt;!-- Animated shimmer --&gt;
+&lt;div class="skeleton animated"
+  style="height:200px"&gt;
+&lt;/div&gt;
+
+&lt;!-- Circle (avatar) --&gt;
+&lt;div class="skeleton circle"
+  style="width:40px;height:40px"&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <span class="demo-section-sep">Navigation</span>
+
+    <!-- TABS -->
+    <section class="comp-section" id="tabs">
+      <div class="comp-header">
+        <span class="comp-title">Tabs <span class="comp-tag">Web Component</span></span>
+      </div>
+      <p class="comp-hint"><code>&lt;sp-tabs&gt;</code> Web Component. Handles keyboard navigation (arrow keys, Home, End), ARIA attributes, and active state automatically.</p>
+      <div class="comp-panes wide">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <sp-tabs>
+            <sp-tab-list>
+              <sp-tab panel="t-overview">Overview</sp-tab>
+              <sp-tab panel="t-settings">Settings</sp-tab>
+              <sp-tab panel="t-logs">Logs</sp-tab>
+            </sp-tab-list>
+            <sp-panel id="t-overview" aria-hidden="false">
+              <p style="padding:var(--sp-4);color:var(--sp-text-2)">Overview content goes here. This panel is visible by default.</p>
+            </sp-panel>
+            <sp-panel id="t-settings">
+              <p style="padding:var(--sp-4);color:var(--sp-text-2)">Settings content. Switch themes, configure preferences.</p>
+            </sp-panel>
+            <sp-panel id="t-logs">
+              <pre style="margin:var(--sp-4)"><code>[2025-01-15 10:23] INFO  Server started on :8080
+[2025-01-15 10:24] DEBUG Request GET /api/users
+[2025-01-15 10:24] INFO  Response 200 OK (12ms)</code></pre>
+            </sp-panel>
+          </sp-tabs>
+        </div>
+        <div class="pane-code" style="margin-top:var(--sp-4)">
+          <pre><code>&lt;sp-tabs&gt;
+  &lt;sp-tab-list&gt;
+    &lt;sp-tab panel="overview"&gt;Overview&lt;/sp-tab&gt;
+    &lt;sp-tab panel="settings"&gt;Settings&lt;/sp-tab&gt;
+  &lt;/sp-tab-list&gt;
+  &lt;sp-panel id="overview"&gt;
+    &lt;p&gt;Content here.&lt;/p&gt;
+  &lt;/sp-panel&gt;
+  &lt;sp-panel id="settings"&gt;
+    &lt;p&gt;Settings content.&lt;/p&gt;
+  &lt;/sp-panel&gt;
+&lt;/sp-tabs&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVBAR -->
+    <section class="comp-section" id="navbar">
+      <div class="comp-header">
+        <span class="comp-title">Navbar <span class="comp-tag">&lt;nav&gt;</span></span>
+      </div>
+      <p class="comp-hint">Put <code>&lt;nav&gt;</code> inside <code>&lt;header&gt;</code> or <code>[role="banner"]</code> so Sprout applies navbar styles. Use <code>.brand</code> for logo, <code>ul</code> for links, <code>.active</code> on current page.</p>
+      <div class="comp-panes wide">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <header>
+            <nav>
+              <a class="brand" href="#">MyApp</a>
+              <ul>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Settings</a></li>
+              </ul>
+              <div class="cluster gap-2">
+                <button class="ghost sm">Log in</button>
+                <button class="sm">Sign up</button>
+              </div>
+            </nav>
+          </header>
+        </div>
+        <div class="pane-code" style="margin-top:var(--sp-4)">
+          <pre><code>&lt;header&gt;
+  &lt;nav&gt;
+    &lt;a class="brand" href="/"&gt;MyApp&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="/" class="active"&gt;Dashboard&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="/projects"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class="cluster"&gt;
+      &lt;button class="sm"&gt;Sign up&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BREADCRUMB -->
+    <section class="comp-section" id="breadcrumb">
+      <div class="comp-header">
+        <span class="comp-title">Breadcrumb <span class="comp-tag">.breadcrumb</span></span>
+      </div>
+      <p class="comp-hint">Wrap in <code>&lt;nav aria-label="Breadcrumb"&gt;</code>. Mark current page with <code>aria-current="page"</code>. Separators via CSS — no extra markup.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Projects</a></li>
+              <li><a href="#">Sprout UI</a></li>
+              <li aria-current="page">Demo</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;nav aria-label="Breadcrumb"&gt;
+  &lt;ol class="breadcrumb"&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/p"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+    &lt;li aria-current="page"&gt;
+      Current
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGINATION -->
+    <section class="comp-section" id="pagination">
+      <div class="comp-header">
+        <span class="comp-title">Pagination <span class="comp-tag">.pagination</span></span>
+      </div>
+      <p class="comp-hint">Use <code>aria-current="page"</code> on the active page link. Previous/next arrows via <code>aria-label</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <nav aria-label="Pagination">
+            <ol class="pagination">
+              <li><a href="#" aria-label="Previous">←</a></li>
+              <li><a href="#">1</a></li>
+              <li><a href="#" aria-current="page">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><span>…</span></li>
+              <li><a href="#">12</a></li>
+              <li><a href="#" aria-label="Next">→</a></li>
+            </ol>
+          </nav>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;nav aria-label="Pagination"&gt;
+  &lt;ol class="pagination"&gt;
+    &lt;li&gt;
+      &lt;a href="?p=1"
+        aria-label="Previous"&gt;←&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href="?p=2"
+      aria-current="page"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;
+      &lt;a href="?p=3"
+        aria-label="Next"&gt;→&lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDEBAR -->
+    <section class="comp-section" id="sidebar">
+      <div class="comp-header">
+        <span class="comp-title">Sidebar <span class="comp-tag">.sidebar</span></span>
+      </div>
+      <p class="comp-hint"><code>aside.sidebar</code> with <code>.sidebar-label</code> for section headings. Typically <code>position: sticky</code> in a two-column layout.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <aside class="sidebar" style="width:180px">
+            <nav>
+              <p class="sidebar-label">Main</p>
+              <ul>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Team</a></li>
+              </ul>
+              <p class="sidebar-label">Account</p>
+              <ul>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Log out</a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;aside class="sidebar"&gt;
+  &lt;nav&gt;
+    &lt;p class="sidebar-label"&gt;Main&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;a href="/" class="active"&gt;
+          Dashboard
+        &lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href="/p"&gt;Projects&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/aside&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <span class="demo-section-sep">Overlays</span>
+
+    <!-- ACCORDION -->
+    <section class="comp-section" id="accordion">
+      <div class="comp-header">
+        <span class="comp-title">Accordion <span class="comp-tag">&lt;details&gt; — zero JS</span></span>
+      </div>
+      <p class="comp-hint">Native <code>&lt;details&gt;</code> + <code>&lt;summary&gt;</code>. Expand/collapse is browser-native — no JavaScript at all. Custom chevron via CSS.</p>
+      <div class="comp-panes wide">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <details open>
+            <summary>What is Sprout?</summary>
+            <p>Sprout is an ultra-lightweight, sustainable, zero-dependency UI library. Drop in two files and you have a complete UI system.</p>
+          </details>
+          <details>
+            <summary>How do I customise themes?</summary>
+            <p>Override any <code>--sp-*</code> CSS variable. Set <code>data-theme="dark|light|high-contrast"</code> on <code>&lt;html&gt;</code>, or omit it to follow the OS preference automatically.</p>
+          </details>
+          <details>
+            <summary>Does it work without JavaScript?</summary>
+            <p>Most components are pure CSS. Only Tabs, Modal, Dropdown, Toast, and the theme switcher API require JS.</p>
+          </details>
+        </div>
+        <div class="pane-code" style="margin-top:var(--sp-4)">
+          <pre><code>&lt;!-- Open by default --&gt;
+&lt;details open&gt;
+  &lt;summary&gt;Question&lt;/summary&gt;
+  &lt;p&gt;Answer goes here.&lt;/p&gt;
+&lt;/details&gt;
+
+&lt;!-- Collapsed --&gt;
+&lt;details&gt;
+  &lt;summary&gt;Another question&lt;/summary&gt;
+  &lt;p&gt;Another answer.&lt;/p&gt;
+&lt;/details&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <section class="comp-section" id="modal">
+      <div class="comp-header">
+        <span class="comp-title">Modal <span class="comp-tag">&lt;dialog&gt;</span></span>
+      </div>
+      <p class="comp-hint">Native <code>&lt;dialog&gt;</code> element. JS handles <code>showModal()</code>, focus trap, backdrop click, and <code>Escape</code> key (native). Sizes: default (560px), <code>sm</code>, <code>lg</code>, <code>full</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="cluster gap-2">
+            <button data-modal="d-default">Open modal</button>
+            <button class="outline" data-modal="d-sm">Small</button>
+            <button class="outline" data-modal="d-danger">Danger</button>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;button data-modal="my-modal"&gt;
+  Open
+&lt;/button&gt;
+
+&lt;dialog id="my-modal"&gt;
+  &lt;header&gt;
+    &lt;h3&gt;Title&lt;/h3&gt;
+    &lt;button class="ghost icon"
+      data-modal-close
+      aria-label="Close"&gt;✕
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class="dialog-body"&gt;
+    &lt;p&gt;Body content.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;footer&gt;
+    &lt;button class="outline"
+      data-modal-close&gt;Cancel
+    &lt;/button&gt;
+    &lt;button&gt;Confirm&lt;/button&gt;
+  &lt;/footer&gt;
+&lt;/dialog&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dialogs (hidden) -->
+    <dialog id="d-default">
+      <header>
+        <h3>Confirm action</h3>
+        <button class="ghost icon" data-modal-close aria-label="Close">✕</button>
+      </header>
+      <div class="dialog-body">
+        <p>Are you sure you want to continue? This action cannot be undone.</p>
+      </div>
+      <footer>
+        <button class="outline" data-modal-close>Cancel</button>
+        <button>Confirm</button>
+      </footer>
+    </dialog>
+
+    <dialog id="d-sm" class="sm">
+      <header>
+        <h3>Small modal</h3>
+        <button class="ghost icon" data-modal-close aria-label="Close">✕</button>
+      </header>
+      <div class="dialog-body">
+        <p>This is a <code>dialog.sm</code> at 400px max-width.</p>
+      </div>
+      <footer>
+        <button data-modal-close>Got it</button>
+      </footer>
+    </dialog>
+
+    <dialog id="d-danger" class="sm">
+      <header>
+        <h3>Delete item</h3>
+        <button class="ghost icon" data-modal-close aria-label="Close">✕</button>
+      </header>
+      <div class="dialog-body">
+        <div role="alert" class="danger" style="margin-bottom:var(--sp-4)">This action is permanent and cannot be undone.</div>
+        <p>Are you sure you want to delete <strong>Project Alpha</strong>?</p>
+      </div>
+      <footer>
+        <button class="outline" data-modal-close>Cancel</button>
+        <button class="danger" data-modal-close>Delete</button>
+      </footer>
+    </dialog>
+
+    <!-- DROPDOWN -->
+    <section class="comp-section" id="dropdown">
+      <div class="comp-header">
+        <span class="comp-title">Dropdown <span class="comp-tag">Web Component</span></span>
+      </div>
+      <p class="comp-hint"><code>&lt;sp-dropdown&gt;</code> Web Component. Keyboard navigation (arrow keys + Enter + Escape), outside-click close. Trigger via <code>slot="trigger"</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview" style="min-height:180px">
+          <p class="pane-label">Preview</p>
+          <div class="cluster gap-3">
+            <sp-dropdown>
+              <button slot="trigger">Actions ▾</button>
+              <sp-menu>
+                <sp-menu-item>Edit</sp-menu-item>
+                <sp-menu-item>Duplicate</sp-menu-item>
+                <sp-menu-item>Export</sp-menu-item>
+                <sp-menu-item class="danger">Delete</sp-menu-item>
+              </sp-menu>
+            </sp-dropdown>
+            <sp-dropdown>
+              <button class="outline" slot="trigger">Filter ▾</button>
+              <sp-menu>
+                <sp-menu-item>All items</sp-menu-item>
+                <sp-menu-item>Active</sp-menu-item>
+                <sp-menu-item>Archived</sp-menu-item>
+              </sp-menu>
+            </sp-dropdown>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;sp-dropdown&gt;
+  &lt;button slot="trigger"&gt;
+    Options ▾
+  &lt;/button&gt;
+  &lt;sp-menu&gt;
+    &lt;sp-menu-item&gt;Edit&lt;/sp-menu-item&gt;
+    &lt;sp-menu-item&gt;
+      Duplicate
+    &lt;/sp-menu-item&gt;
+    &lt;sp-menu-item class="danger"&gt;
+      Delete
+    &lt;/sp-menu-item&gt;
+  &lt;/sp-menu&gt;
+&lt;/sp-dropdown&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLTIP -->
+    <section class="comp-section" id="tooltip">
+      <div class="comp-header">
+        <span class="comp-title">Tooltip <span class="comp-tag">CSS-only</span></span>
+      </div>
+      <p class="comp-hint">Add <code>data-tooltip="text"</code> to any element. Shows on hover and <code>:focus-visible</code>. Pure CSS — no JS needed for simple cases.</p>
+      <div class="comp-panes">
+        <div class="pane-preview" style="padding-top:var(--sp-10)">
+          <p class="pane-label">Preview — hover the elements</p>
+          <div class="cluster gap-4">
+            <span data-tooltip="This is a tooltip" style="cursor:default;color:var(--sp-primary);border-bottom:1px dashed var(--sp-primary)">Hover me</span>
+            <button data-tooltip="Save all changes">Save</button>
+            <button class="icon" data-tooltip="Close panel" aria-label="Close">✕</button>
+            <span class="badge success" data-tooltip="Deployed 2 minutes ago">Live</span>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;!-- Any element --&gt;
+&lt;span data-tooltip="Tooltip text"&gt;
+  Hover me
+&lt;/span&gt;
+
+&lt;!-- On a button --&gt;
+&lt;button data-tooltip="Save changes"&gt;
+  Save
+&lt;/button&gt;
+
+&lt;!-- On a badge --&gt;
+&lt;span class="badge success"
+  data-tooltip="Deployed 2m ago"&gt;
+  Live
+&lt;/span&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <span class="demo-section-sep">Display</span>
+
+    <!-- TABLE -->
+    <section class="comp-section" id="table">
+      <div class="comp-header">
+        <span class="comp-title">Table <span class="comp-tag">semantic</span></span>
+      </div>
+      <p class="comp-hint">Semantic <code>&lt;table&gt;</code> styled directly. Wrap in <code>.table-wrap</code> for border + overflow. Variants: <code>.striped</code>, <code>.bordered</code>, <code>.compact</code>.</p>
+      <div class="comp-panes wide">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Status</th>
+                  <th>Owner</th>
+                  <th>Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Sprout UI</strong></td>
+                  <td><span class="badge success">Active</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:var(--sp-2)">
+                      <span class="avatar sm">JD</span> Jane Doe
+                    </div>
+                  </td>
+                  <td><small>2 hours ago</small></td>
+                </tr>
+                <tr>
+                  <td><strong>Alpha Dashboard</strong></td>
+                  <td><span class="badge warning">Pending</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:var(--sp-2)">
+                      <span class="avatar sm">MK</span> Mike K.
+                    </div>
+                  </td>
+                  <td><small>Yesterday</small></td>
+                </tr>
+                <tr>
+                  <td><strong>Legacy API</strong></td>
+                  <td><span class="badge danger">Deprecated</span></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:var(--sp-2)">
+                      <span class="avatar sm">SR</span> Sara R.
+                    </div>
+                  </td>
+                  <td><small>3 weeks ago</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pane-code" style="margin-top:var(--sp-4)">
+          <pre><code>&lt;div class="table-wrap"&gt;
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Name&lt;/th&gt;
+        &lt;th&gt;Status&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Project&lt;/td&gt;
+        &lt;td&gt;
+          &lt;span class="badge success"&gt;
+            Active
+          &lt;/span&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARD -->
+    <section class="comp-section" id="card">
+      <div class="comp-header">
+        <span class="comp-title">Card <span class="comp-tag">.card</span></span>
+      </div>
+      <p class="comp-hint">Class <code>.card</code> on any element. Optional <code>&lt;header&gt;</code> and <code>&lt;footer&gt;</code> inside. Variants: <code>flat</code>, <code>outline</code>, <code>interactive</code>.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-3">
+            <article class="card">
+              <header>
+                <h3 style="font-size:0.9375rem">Full card</h3>
+                <span class="badge info">New</span>
+              </header>
+              <p style="font-size:0.875rem;color:var(--sp-text-2)">A card with header and footer. Use inside a <code>.grid</code> for dashboards.</p>
+              <footer>
+                <button class="outline sm">Cancel</button>
+                <button class="sm">Confirm</button>
+              </footer>
+            </article>
+            <div class="grid cols-2" style="gap:var(--sp-3)">
+              <article class="card flat"><small style="color:var(--sp-text-muted)">.flat</small><p style="font-size:0.875rem;margin-top:var(--sp-1)">No border, subtle bg</p></article>
+              <article class="card interactive"><small style="color:var(--sp-text-muted)">.interactive</small><p style="font-size:0.875rem;margin-top:var(--sp-1)">Hover me</p></article>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;article class="card"&gt;
+  &lt;header&gt;
+    &lt;h3&gt;Title&lt;/h3&gt;
+    &lt;span class="badge"&gt;Tag&lt;/span&gt;
+  &lt;/header&gt;
+  &lt;p&gt;Card body.&lt;/p&gt;
+  &lt;footer&gt;
+    &lt;button class="outline sm"&gt;
+      Cancel
+    &lt;/button&gt;
+    &lt;button class="sm"&gt;OK&lt;/button&gt;
+  &lt;/footer&gt;
+&lt;/article&gt;
+
+&lt;article class="card flat"&gt;...&lt;/article&gt;
+&lt;article class="card interactive"&gt;
+  ...
+&lt;/article&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVATAR -->
+    <section class="comp-section" id="avatar">
+      <div class="comp-header">
+        <span class="comp-title">Avatar <span class="comp-tag">.avatar</span></span>
+      </div>
+      <p class="comp-hint">Initials or <code>&lt;img&gt;</code> inside <code>.avatar</code>. Status dot via <code>data-status="online"</code>. Group: <code>.avatar-group</code> with auto-overlapping.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <div class="cluster gap-3">
+              <span class="avatar sm">AB</span>
+              <span class="avatar">JD</span>
+              <span class="avatar lg">XY</span>
+            </div>
+            <div class="cluster gap-3">
+              <span class="avatar" data-status="online">OK</span>
+              <span class="avatar" data-status="offline">NO</span>
+            </div>
+            <div class="avatar-group">
+              <span class="avatar">A</span>
+              <span class="avatar">B</span>
+              <span class="avatar">C</span>
+              <span class="avatar" style="background:var(--sp-surface-3);color:var(--sp-text-muted)">+4</span>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;span class="avatar"&gt;JD&lt;/span&gt;
+&lt;span class="avatar sm"&gt;AB&lt;/span&gt;
+&lt;span class="avatar lg"&gt;
+  &lt;img src="photo.jpg" alt="Jane"&gt;
+&lt;/span&gt;
+
+&lt;!-- Status --&gt;
+&lt;span class="avatar"
+  data-status="online"&gt;OK&lt;/span&gt;
+
+&lt;!-- Group --&gt;
+&lt;div class="avatar-group"&gt;
+  &lt;span class="avatar"&gt;A&lt;/span&gt;
+  &lt;span class="avatar"&gt;B&lt;/span&gt;
+  &lt;span class="avatar"&gt;+3&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAT -->
+    <section class="comp-section" id="stat">
+      <div class="comp-header">
+        <span class="comp-title">Stat / Metric <span class="comp-tag">.stat</span></span>
+      </div>
+      <p class="comp-hint">Use inside a <code>.grid</code> for dashboard metric rows. <code>.positive</code> / <code>.negative</code> on <code>.stat-change</code>.</p>
+      <div class="comp-panes wide">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="grid cols-3">
+            <div class="stat">
+              <p class="stat-label">Total Revenue</p>
+              <p class="stat-value">$48,295</p>
+              <p class="stat-change positive">↑ 12.5% vs last month</p>
+            </div>
+            <div class="stat">
+              <p class="stat-label">Active Users</p>
+              <p class="stat-value">3,842</p>
+              <p class="stat-change positive">↑ 4.2%</p>
+            </div>
+            <div class="stat">
+              <p class="stat-label">Churn Rate</p>
+              <p class="stat-value">3.2%</p>
+              <p class="stat-change negative">↑ 0.4%</p>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code" style="margin-top:var(--sp-4)">
+          <pre><code>&lt;div class="grid cols-3"&gt;
+  &lt;div class="stat"&gt;
+    &lt;p class="stat-label"&gt;Revenue&lt;/p&gt;
+    &lt;p class="stat-value"&gt;$48,295&lt;/p&gt;
+    &lt;p class="stat-change positive"&gt;
+      ↑ 12.5%
+    &lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="stat"&gt;
+    &lt;p class="stat-label"&gt;Churn&lt;/p&gt;
+    &lt;p class="stat-value"&gt;3.2%&lt;/p&gt;
+    &lt;p class="stat-change negative"&gt;
+      ↑ 0.4%
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CODE BLOCK -->
+    <section class="comp-section" id="code">
+      <div class="comp-header">
+        <span class="comp-title">Code block <span class="comp-tag">&lt;pre&gt;&lt;code&gt;</span></span>
+      </div>
+      <p class="comp-hint">Semantic <code>&lt;pre&gt;&lt;code&gt;</code>. Add <code>data-copy</code> on <code>&lt;pre&gt;</code> to enable click-to-copy (JS adds a copy button automatically).</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <pre data-copy><code>const greet = (name) => `Hello, ${name}!`;
+console.log(greet('Sprout'));
+
+// With Sprout toast
+Sprout.toast('File saved.', { type: 'success' });</code></pre>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;pre data-copy&gt;
+  &lt;code&gt;
+    your code here
+  &lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;!-- Inline code --&gt;
+&lt;p&gt;Use &lt;code&gt;Sprout.toast()&lt;/code&gt;
+   to show a notification.&lt;/p&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <section class="comp-section" id="divider">
+      <div class="comp-header">
+        <span class="comp-title">Divider <span class="comp-tag">&lt;hr&gt;</span></span>
+      </div>
+      <p class="comp-hint">Semantic <code>&lt;hr&gt;</code> styled directly. Add <code>class="label"</code> with <code>data-label</code> for labelled dividers. Vertical via <code>.divider.vertical</code> in flex containers.</p>
+      <div class="comp-panes">
+        <div class="pane-preview">
+          <p class="pane-label">Preview</p>
+          <div class="stack gap-4">
+            <hr>
+            <div style="position:relative;display:flex;align-items:center;gap:var(--sp-3)">
+              <div style="flex:1;height:1px;background:var(--sp-border)"></div>
+              <small style="color:var(--sp-text-muted)">or continue with</small>
+              <div style="flex:1;height:1px;background:var(--sp-border)"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:var(--sp-4)">
+              <span style="font-size:0.875rem;color:var(--sp-text-2)">Left</span>
+              <div class="divider vertical" style="height:24px"></div>
+              <span style="font-size:0.875rem;color:var(--sp-text-2)">Right</span>
+              <div class="divider vertical" style="height:24px"></div>
+              <span style="font-size:0.875rem;color:var(--sp-text-2)">More</span>
+            </div>
+          </div>
+        </div>
+        <div class="pane-code">
+          <p class="pane-label">Code</p>
+          <pre><code>&lt;!-- Horizontal --&gt;
+&lt;hr&gt;
+
+&lt;!-- Labelled --&gt;
+&lt;hr class="label" data-label="or"&gt;
+
+&lt;!-- Vertical (in flex) --&gt;
+&lt;div style="display:flex"&gt;
+  &lt;span&gt;Left&lt;/span&gt;
+  &lt;div class="divider vertical"&gt;
+  &lt;/div&gt;
+  &lt;span&gt;Right&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <footer style="border-top:1px solid var(--sp-border);padding:var(--sp-8) 0;margin-top:var(--sp-8);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--sp-4)">
+      <p style="font-size:0.8125rem;color:var(--sp-text-muted)">Sprout UI · Lightweight by principle. Sustainable by design. · MIT License</p>
+      <div class="cluster gap-2">
+        <span class="badge success">0.08g CO₂/view</span>
+        <span class="badge">&lt; 13KB gzipped</span>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<!-- Toast container -->
+<div id="sp-toast-container"></div>
+
+<script>
+  // ============================================================
+  // SPROUT JS (inline until src/sprout.js is linked)
+  // CURSOR: Replace with: import Sprout from '../src/sprout.js';
+  // ============================================================
+
+  const Sprout = (() => {
+
+    // --- Theme ---
+    const setTheme = (theme) => {
+      if (theme) document.documentElement.setAttribute('data-theme', theme);
+      else document.documentElement.removeAttribute('data-theme');
+      document.querySelectorAll('.theme-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.themeSet === theme);
+      });
+    };
+
+    const getTheme = () => document.documentElement.getAttribute('data-theme') || 'auto';
+    const toggleTheme = () => setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+
+    // --- Toast ---
+    let toastContainer;
+
+    const toast = (message, opts = {}) => {
+      const { type = '', duration = 4000, position = 'top-right' } = opts;
+      if (!toastContainer) {
+        toastContainer = document.getElementById('sp-toast-container') || (() => {
+          const el = document.createElement('div');
+          el.id = 'sp-toast-container';
+          document.body.appendChild(el);
+          return el;
+        })();
+      }
+
+      const el = document.createElement('div');
+      el.className = `sp-toast${type ? ' ' + type : ''}`;
+      el.innerHTML = `<span>${message}</span><button class="sp-toast-close" aria-label="Dismiss">✕</button>`;
+
+      el.querySelector('.sp-toast-close').addEventListener('click', () => dismissToast(el));
+      toastContainer.appendChild(el);
+
+      if (duration > 0) setTimeout(() => dismissToast(el), duration);
+    };
+
+    const dismissToast = (el) => {
+      el.classList.add('exiting');
+      el.addEventListener('animationend', () => el.remove(), { once: true });
+    };
+
+    // --- Modal ---
+    const initModals = () => {
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-modal]');
+        if (trigger) {
+          const dialog = document.getElementById(trigger.dataset.modal);
+          if (dialog) { dialog.showModal(); trapFocus(dialog); }
+        }
+        const closer = e.target.closest('[data-modal-close]');
+        if (closer) {
+          const dialog = closer.closest('dialog');
+          if (dialog) dialog.close();
+        }
+      });
+
+      document.querySelectorAll('dialog').forEach(dialog => {
+        dialog.addEventListener('click', (e) => {
+          if (e.target === dialog) dialog.close();
+        });
+      });
+    };
+
+    const trapFocus = (el) => {
+      const focusable = el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      el.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey) { if (document.activeElement === first) { last.focus(); e.preventDefault(); } }
+        else { if (document.activeElement === last) { first.focus(); e.preventDefault(); } }
+      }, { once: false });
+      if (first) first.focus();
+    };
+
+    // --- Dismissible alerts ---
+    const initAlerts = () => {
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-dismiss-alert]');
+        if (btn) {
+          const alert = btn.closest('[role="alert"]');
+          if (alert) {
+            alert.style.transition = `opacity ${getComputedStyle(document.documentElement).getPropertyValue('--sp-dur-base')} ease`;
+            alert.style.opacity = '0';
+            setTimeout(() => alert.setAttribute('data-dismissed', ''), 200);
+          }
+        }
+      });
+    };
+
+    // --- Copy buttons ---
+    const initCopyButtons = () => {
+      // data-copy on pre elements
+      document.querySelectorAll('pre[data-copy]').forEach(pre => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.style.cssText = `position:absolute;top:var(--sp-3);right:var(--sp-3)`;
+        pre.style.position = 'relative';
+        pre.appendChild(btn);
+        btn.addEventListener('click', () => copyText(pre.querySelector('code')?.textContent || pre.textContent, btn));
+      });
+
+      // .copy-btn inside .pane-code
+      document.querySelectorAll('.pane-code .copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const code = btn.closest('.pane-code').querySelector('pre code');
+          if (code) copyText(code.textContent, btn);
+        });
+      });
+    };
+
+    const copyText = (text, btn) => {
+      navigator.clipboard.writeText(text.trim()).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+      });
+    };
+
+    // --- Tabs (simple, until Web Component is defined) ---
+    const initTabs = () => {
+      document.querySelectorAll('sp-tabs').forEach(tabs => {
+        const tabEls = tabs.querySelectorAll('sp-tab');
+        const panels = tabs.querySelectorAll('sp-panel');
+
+        const activate = (tab) => {
+          tabEls.forEach(t => t.setAttribute('aria-selected', 'false'));
+          panels.forEach(p => p.setAttribute('aria-hidden', 'true'));
+          tab.setAttribute('aria-selected', 'true');
+          const panel = tabs.querySelector(`sp-panel#${tab.getAttribute('panel')}`);
+          if (panel) panel.setAttribute('aria-hidden', 'false');
+        };
+
+        tabEls.forEach((tab, i) => {
+          tab.setAttribute('role', 'tab');
+          tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+          tab.setAttribute('tabindex', i === 0 ? '0' : '-1');
+          tab.addEventListener('click', () => activate(tab));
+          tab.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { const next = tabEls[i + 1] || tabEls[0]; next.focus(); activate(next); }
+            if (e.key === 'ArrowLeft')  { const prev = tabEls[i - 1] || tabEls[tabEls.length - 1]; prev.focus(); activate(prev); }
+          });
+        });
+
+        panels.forEach((panel, i) => {
+          panel.setAttribute('role', 'tabpanel');
+          panel.setAttribute('aria-hidden', i === 0 ? 'false' : 'true');
+        });
+      });
+    };
+
+    // --- Dropdown (simple, until Web Component is defined) ---
+    const initDropdowns = () => {
+      document.querySelectorAll('sp-dropdown').forEach(dd => {
+        const trigger = dd.querySelector('[slot="trigger"]');
+        if (!trigger) return;
+
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = dd.hasAttribute('open');
+          document.querySelectorAll('sp-dropdown[open]').forEach(d => d.removeAttribute('open'));
+          if (!isOpen) dd.setAttribute('open', '');
+        });
+      });
+
+      document.addEventListener('click', () => {
+        document.querySelectorAll('sp-dropdown[open]').forEach(d => d.removeAttribute('open'));
+      });
+    };
+
+    // --- Scroll spy for sidebar nav ---
+    const initScrollSpy = () => {
+      const sections = document.querySelectorAll('.comp-section[id]');
+      const navLinks = document.querySelectorAll('.demo-nav-list a');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(a => a.classList.remove('active'));
+            const active = document.querySelector(`.demo-nav-list a[href="#${entry.target.id}"]`);
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '-52px 0px -60% 0px' });
+
+      sections.forEach(s => observer.observe(s));
+    };
+
+    // --- Range value display ---
+    const initRange = () => {
+      const r = document.getElementById('d-range');
+      const v = document.getElementById('range-val');
+      if (r && v) r.addEventListener('input', () => v.textContent = r.value);
+    };
+
+    // --- Theme buttons ---
+    const initThemeButtons = () => {
+      document.querySelectorAll('[data-theme-set]').forEach(btn => {
+        btn.addEventListener('click', () => setTheme(btn.dataset.themeSet));
+      });
+      // Set initial active
+      const current = getTheme();
+      document.querySelectorAll('.theme-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.themeSet === current || (b.dataset.themeSet === '' && current === 'auto'));
+      });
+    };
+
+    // --- Init ---
+    const init = () => {
+      initModals();
+      initAlerts();
+      initCopyButtons();
+      initTabs();
+      initDropdowns();
+      initScrollSpy();
+      initRange();
+      initThemeButtons();
+    };
+
+    return { init, setTheme, getTheme, toggleTheme, toast };
+  })();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', Sprout.init);
+  } else {
+    Sprout.init();
+  }
+
+  // Toast demo buttons
+  document.getElementById('t-default')?.addEventListener('click', () => Sprout.toast('File saved successfully.'));
+  document.getElementById('t-success')?.addEventListener('click', () => Sprout.toast('Changes saved.', { type: 'success' }));
+  document.getElementById('t-danger')?.addEventListener('click',  () => Sprout.toast('Something went wrong. Try again.', { type: 'danger' }));
+  document.getElementById('t-info')?.addEventListener('click',    () => Sprout.toast('Update available. Refresh to apply.', { type: 'info', duration: 6000 }));
+  document.getElementById('t-persist')?.addEventListener('click', () => Sprout.toast('Action required — review before proceeding.', { type: 'warning', duration: 0 }));
+</script>
+
+</body>
+</html>

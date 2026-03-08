@@ -1,0 +1,2307 @@
+/* ==========================================================================
+   Sprout UI — Design tokens & theme system
+   All tokens prefixed --sp- to avoid collisions.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Theme: Dark (default — eco-first, OLED-safe)
+   Near-black backgrounds save significant power on OLED displays.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"],
+:root {
+  --sp-bg:             #0a0b0a;
+  --sp-surface:        #111311;
+  --sp-surface-2:      #1a1d1a;
+  --sp-surface-3:      #222622;
+  --sp-border:         #2e332e;
+  --sp-border-2:       #3d453d;
+  --sp-text:           #eaece8;
+  --sp-text-2:         #a8b0a4;
+  --sp-text-muted:     #636b60;
+  --sp-primary:        #4a7c59;
+  --sp-primary-outline:#6b9b7a; /* lighter green for text/border on dark bg (contrast) */
+  --sp-primary-fg:    #eaece8;
+  --sp-primary-hover:  #56926a;
+  --sp-danger:       #8b3a3a;
+  --sp-danger-fg:    #f4c4c4;
+  --sp-warning:      #7a5c1e;
+  --sp-warning-fg:   #f5dfa0;
+  --sp-success:      #2e6644;
+  --sp-success-fg:   #b8f0cc;
+  --sp-info:         #2a4f7a;
+  --sp-info-fg:      #b8d8f5;
+}
+
+/* --------------------------------------------------------------------------
+   Theme: Light
+   Muted off-white — never pure white, reduces glare energy.
+   -------------------------------------------------------------------------- */
+[data-theme="light"] {
+  --sp-bg:           #f4f5f2;
+  --sp-surface:      #eaece7;
+  --sp-surface-2:    #e0e3dc;
+  --sp-surface-3:    #d5d9d0;
+  --sp-border:       #c2c9bb;
+  --sp-border-2:     #adb5a5;
+  --sp-text:         #141614;
+  --sp-text-2:       #3d4539;
+  --sp-text-muted:   #6b7565;
+  --sp-primary:      #3d6b4a;
+  --sp-primary-fg:   #f4f5f2;
+  --sp-primary-hover:#4a7c59;
+  --sp-danger:       #922e2e;
+  --sp-danger-fg:    #fff0f0;
+  --sp-warning:      #7a5200;
+  --sp-warning-fg:   #fff8e6;
+  --sp-success:      #1f5c34;
+  --sp-success-fg:   #eafff1;
+  --sp-info:         #1e4a7a;
+  --sp-info-fg:      #eef5ff;
+}
+
+/* --------------------------------------------------------------------------
+   Theme: High contrast (accessibility — WCAG AAA)
+   -------------------------------------------------------------------------- */
+[data-theme="high-contrast"] {
+  --sp-bg:           #000000;
+  --sp-surface:      #0a0a0a;
+  --sp-surface-2:    #141414;
+  --sp-surface-3:    #1e1e1e;
+  --sp-border:       #ffffff;
+  --sp-border-2:     #ffffff;
+  --sp-text:         #ffffff;
+  --sp-text-2:       #eeeeee;
+  --sp-text-muted:   #bbbbbb;
+  --sp-primary:      #00ff88;
+  --sp-primary-fg:   #000000;
+  --sp-primary-hover:#00cc6e;
+  --sp-danger:       #ff4444;
+  --sp-danger-fg:    #000000;
+  --sp-warning:      #ffcc00;
+  --sp-warning-fg:   #000000;
+  --sp-success:      #00ff88;
+  --sp-success-fg:   #000000;
+  --sp-info:         #44aaff;
+  --sp-info-fg:      #000000;
+}
+
+/* --------------------------------------------------------------------------
+   Theme: Auto (no data-theme) — follows OS preference
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --sp-bg:           #f4f5f2;
+    --sp-surface:      #eaece7;
+    --sp-surface-2:    #e0e3dc;
+    --sp-surface-3:    #d5d9d0;
+    --sp-border:       #c2c9bb;
+    --sp-border-2:     #adb5a5;
+    --sp-text:         #141614;
+    --sp-text-2:       #3d4539;
+    --sp-text-muted:   #6b7565;
+    --sp-primary:      #3d6b4a;
+    --sp-primary-fg:   #f4f5f2;
+    --sp-primary-hover:#4a7c59;
+    --sp-danger:       #922e2e;
+    --sp-danger-fg:    #fff0f0;
+    --sp-warning:      #7a5200;
+    --sp-warning-fg:   #fff8e6;
+    --sp-success:      #1f5c34;
+    --sp-success-fg:   #eafff1;
+    --sp-info:         #1e4a7a;
+    --sp-info-fg:      #eef5ff;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --sp-bg:             #0a0b0a;
+    --sp-surface:        #111311;
+    --sp-surface-2:      #1a1d1a;
+    --sp-surface-3:      #222622;
+    --sp-border:         #2e332e;
+    --sp-border-2:       #3d453d;
+    --sp-text:           #eaece8;
+    --sp-text-2:         #a8b0a4;
+    --sp-text-muted:     #636b60;
+    --sp-primary:        #4a7c59;
+    --sp-primary-outline:#6b9b7a;
+    --sp-primary-fg:     #eaece8;
+    --sp-primary-hover:  #56926a;
+    --sp-danger:       #8b3a3a;
+    --sp-danger-fg:    #f4c4c4;
+    --sp-warning:      #7a5c1e;
+    --sp-warning-fg:   #f5dfa0;
+    --sp-success:      #2e6644;
+    --sp-success-fg:   #b8f0cc;
+    --sp-info:         #2a4f7a;
+    --sp-info-fg:      #b8d8f5;
+  }
+}
+
+/* ==========================================================================
+   Design tokens — spacing, typography, radius, motion, z-index, shadows
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Spacing (4pt grid)
+   -------------------------------------------------------------------------- */
+:root {
+  --sp-1:  0.25rem;   /*  4px */
+  --sp-2:  0.5rem;    /*  8px */
+  --sp-3:  0.75rem;   /* 12px */
+  --sp-4:  1rem;      /* 16px */
+  --sp-5:  1.25rem;   /* 20px */
+  --sp-6:  1.5rem;    /* 24px */
+  --sp-8:  2rem;      /* 32px */
+  --sp-10: 2.5rem;    /* 40px */
+  --sp-12: 3rem;      /* 48px */
+  --sp-16: 4rem;      /* 64px */
+}
+
+/* --------------------------------------------------------------------------
+   Typography (fluid scale using clamp)
+   System font stack only — no webfonts (sustainability).
+   -------------------------------------------------------------------------- */
+:root {
+  --sp-text-xs:   clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
+  --sp-text-sm:   clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);
+  --sp-text-base: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --sp-text-md:   clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --sp-text-lg:   clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  --sp-text-xl:   clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
+  --sp-text-2xl:  clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+  --sp-text-3xl:  clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  --sp-font:      system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sp-font-mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  --sp-leading:       1.6;
+  --sp-leading-tight: 1.2;
+}
+
+/* --------------------------------------------------------------------------
+   Radius
+   -------------------------------------------------------------------------- */
+:root {
+  --sp-radius-sm:  3px;      /* buttons, badges — near-sharp */
+  --sp-radius-md:  5px;      /* inputs, cards — slightly soft */
+  --sp-radius-lg:  8px;      /* modals, larger surfaces */
+  --sp-radius-full: 9999px;  /* pills, avatars */
+}
+
+/* --------------------------------------------------------------------------
+   Motion
+   Only animate: opacity, transform, color, background-color,
+   border-color, box-shadow (focus rings only).
+   Never animate: width, height, top, left, right, bottom,
+   margin, padding, font-size.
+   -------------------------------------------------------------------------- */
+:root {
+  --sp-dur-fast: 120ms;
+  --sp-dur-base: 200ms;
+  --sp-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — CRITICAL: always include
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Z-index scale
+   -------------------------------------------------------------------------- */
+:root {
+  --sp-layer-base:     0;
+  --sp-layer-raised:   10;
+  --sp-layer-dropdown: 100;
+  --sp-layer-modal:    200;
+  --sp-layer-toast:    300;
+  --sp-layer-tooltip:  400;
+}
+
+/* --------------------------------------------------------------------------
+   Breakpoints (use in your own media queries)
+   Sprout has no JS breakpoints — document these for your responsive layout.
+   --sp-bp-sm:  480px   (mobile landscape / large mobile)
+   --sp-bp-md:  768px   (tablet)
+   --sp-bp-lg:  1024px  (desktop)
+   --sp-bp-xl:  1440px  (large screens)
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   Shadows (minimal — elevation via borders preferred)
+   -------------------------------------------------------------------------- */
+:root {
+  --sp-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --sp-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);  /* modals only */
+}
+
+
+/* ==========================================================================
+   7.1 Reset & Base
+   Semantic only — no classes.
+   ========================================================================== */
+
+/* Box model */
+.sp-demo *, .sp-demo *::before, .sp-demo *::after {
+  box-sizing: border-box;
+}
+
+/* Remove defaults */
+.sp-demo * {
+  margin: 0;
+  padding: 0;
+}
+
+/* Base body */
+.sp-demo body {
+  font-family: var(--sp-font);
+  font-size: var(--sp-text-base);
+  line-height: var(--sp-leading);
+  background: var(--sp-bg);
+  color: var(--sp-text);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Smooth scroll (respects reduced motion via the global block in section 5) */
+.sp-demo html {
+  scroll-behavior: smooth;
+}
+
+/* Images */
+.sp-demo img, .sp-demo video {
+  max-width: 100%;
+  display: block;
+}
+
+/* Links */
+.sp-demo a {
+  color: var(--sp-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sp-demo a:hover {
+  color: var(--sp-primary-hover);
+}
+
+/* ==========================================================================
+   7.2 Typography
+   Semantic element selectors only — no classes.
+   ========================================================================== */
+
+.sp-demo h1 {
+  font-size: var(--sp-text-3xl);
+  font-weight: 700;
+  line-height: var(--sp-leading-tight);
+}
+
+.sp-demo h2 {
+  font-size: var(--sp-text-2xl);
+  font-weight: 700;
+}
+
+.sp-demo h3 {
+  font-size: var(--sp-text-xl);
+  font-weight: 600;
+}
+
+.sp-demo h4 {
+  font-size: var(--sp-text-lg);
+  font-weight: 600;
+}
+
+.sp-demo h5 {
+  font-size: var(--sp-text-md);
+  font-weight: 600;
+}
+
+.sp-demo h6 {
+  font-size: var(--sp-text-base);
+  font-weight: 600;
+}
+
+.sp-demo p {
+  font-size: var(--sp-text-base);
+  line-height: var(--sp-leading);
+}
+
+/* Only prose paragraphs get margin; :where() has zero specificity so component styles can override */
+.sp-demo :where(p) {
+  margin-bottom: var(--sp-4);
+}
+
+.sp-demo small {
+  font-size: var(--sp-text-sm);
+  color: var(--sp-text-muted);
+}
+
+.sp-demo strong {
+  font-weight: 600;
+}
+
+.sp-demo code {
+  font-family: var(--sp-font-mono);
+  font-size: var(--sp-text-sm);
+  background: var(--sp-surface-2);
+  padding: 2px 5px;
+  border-radius: var(--sp-radius-sm);
+}
+
+.sp-demo pre {
+  font-family: var(--sp-font-mono);
+  font-size: var(--sp-text-sm);
+  background: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  padding: var(--sp-4);
+  overflow-x: auto;
+  border-radius: var(--sp-radius-md);
+}
+
+.sp-demo pre code {
+  padding: 0;
+  background: none;
+}
+
+.sp-demo kbd {
+  font-family: var(--sp-font-mono);
+  font-size: var(--sp-text-xs);
+  border: 1px solid var(--sp-border-2);
+  border-radius: var(--sp-radius-sm);
+  padding: 2px 6px;
+}
+
+.sp-demo blockquote {
+  border-left: 3px solid var(--sp-primary);
+  padding-left: var(--sp-4);
+  color: var(--sp-text-2);
+}
+
+.sp-demo hr {
+  border: none;
+  border-top: 1px solid var(--sp-border);
+  margin: var(--sp-6) 0;
+}
+
+/* ==========================================================================
+   7.3 Layout Primitives
+   ========================================================================== */
+
+.sp-demo .container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--sp-4);
+}
+
+.sp-demo .container.narrow {
+  max-width: 720px;
+}
+
+.sp-demo .container.wide {
+  max-width: 1440px;
+}
+
+.sp-demo .grid {
+  display: grid;
+  gap: var(--sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+}
+
+.sp-demo .grid.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.sp-demo .grid.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.sp-demo .grid.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 639px) {
+  .sp-demo .grid.cols-2, .sp-demo .grid.cols-3, .sp-demo .grid.cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sp-demo .stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.sp-demo .stack.gap-1 {
+  gap: var(--sp-1);
+}
+
+.sp-demo .stack.gap-2 {
+  gap: var(--sp-2);
+}
+
+.sp-demo .stack.gap-3 {
+  gap: var(--sp-3);
+}
+
+.sp-demo .stack.gap-4 {
+  gap: var(--sp-4);
+}
+
+.sp-demo .stack.gap-5 {
+  gap: var(--sp-5);
+}
+
+.sp-demo .stack.gap-6 {
+  gap: var(--sp-6);
+}
+
+.sp-demo .stack.gap-8 {
+  gap: var(--sp-8);
+}
+
+.sp-demo .cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  align-items: center;
+}
+
+.sp-demo .cluster.gap-2 {
+  gap: var(--sp-2);
+}
+
+.sp-demo .cluster.gap-3 {
+  gap: var(--sp-3);
+}
+
+.sp-demo .cluster.gap-4 {
+  gap: var(--sp-4);
+}
+
+/* ==========================================================================
+   7.4 Button
+   Styled on <button> and [role="button"]. Variants via single classes only.
+   ========================================================================== */
+
+.sp-demo button, .sp-demo [role="button"] {
+  font-family: inherit;
+  font-size: var(--sp-text-base);
+  line-height: var(--sp-leading);
+  min-height: 36px;
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid transparent;
+  border-radius: var(--sp-radius-sm);
+  background-color: var(--sp-primary);
+  color: var(--sp-primary-fg);
+  cursor: pointer;
+  transition:
+    background-color var(--sp-dur-base) var(--sp-ease),
+    border-color var(--sp-dur-base) var(--sp-ease),
+    color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo button:hover:not(:disabled):not(.loading), .sp-demo [role="button"]:hover:not(:disabled):not(.loading) {
+  background-color: var(--sp-primary-hover);
+}
+
+/* Outline — transparent background, primary border + text (primary-outline on dark for contrast) */
+.sp-demo button.outline, .sp-demo [role="button"].outline {
+  background-color: transparent;
+  border-color: var(--sp-primary-outline, var(--sp-primary));
+  color: var(--sp-primary-outline, var(--sp-primary));
+}
+
+.sp-demo button.outline:hover:not(:disabled):not(.loading), .sp-demo [role="button"].outline:hover:not(:disabled):not(.loading) {
+  background-color: var(--sp-primary);
+  color: var(--sp-primary-fg);
+}
+
+/* Ghost — transparent, no border; text-2 for accessible contrast on dark */
+.sp-demo button.ghost, .sp-demo [role="button"].ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--sp-text-2);
+}
+
+.sp-demo button.ghost:hover:not(:disabled):not(.loading), .sp-demo [role="button"].ghost:hover:not(:disabled):not(.loading) {
+  background-color: var(--sp-surface-2);
+  color: var(--sp-text);
+}
+
+/* Danger */
+.sp-demo button.danger, .sp-demo [role="button"].danger {
+  background-color: var(--sp-danger);
+  border-color: transparent;
+  color: var(--sp-danger-fg);
+}
+
+.sp-demo button.danger:hover:not(:disabled):not(.loading), .sp-demo [role="button"].danger:hover:not(:disabled):not(.loading) {
+  background-color: #9e4242;
+  border-color: transparent;
+  color: var(--sp-danger-fg);
+}
+
+/* Success */
+.sp-demo button.success, .sp-demo [role="button"].success {
+  background-color: var(--sp-success);
+  border-color: transparent;
+  color: var(--sp-success-fg);
+}
+
+.sp-demo button.success:hover:not(:disabled):not(.loading), .sp-demo [role="button"].success:hover:not(:disabled):not(.loading) {
+  background-color: #357a4f;
+  border-color: transparent;
+  color: var(--sp-success-fg);
+}
+
+/* Small */
+.sp-demo button.sm, .sp-demo [role="button"].sm {
+  min-height: 36px;
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--sp-text-sm);
+}
+
+/* Large */
+.sp-demo button.lg, .sp-demo [role="button"].lg {
+  min-height: 44px;
+  padding: var(--sp-3) var(--sp-5);
+  font-size: var(--sp-text-md);
+}
+
+/* Full width */
+.sp-demo button.full, .sp-demo [role="button"].full {
+  width: 100%;
+}
+
+/* Icon button — square, compact */
+.sp-demo button.icon, .sp-demo [role="button"].icon {
+  padding: var(--sp-2);
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-demo button.icon.sm, .sp-demo [role="button"].icon.sm {
+  min-width: 36px;
+  min-height: 36px;
+  padding: var(--sp-1);
+}
+
+.sp-demo button.icon.lg, .sp-demo [role="button"].icon.lg {
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--sp-3);
+}
+
+/* Loading — reserve space, disable pointer */
+.sp-demo button.loading, .sp-demo [role="button"].loading {
+  pointer-events: none;
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* Link as button — looks like a standard link, keeps box for alignment with buttons */
+.sp-demo a[role="button"] {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--sp-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sp-demo a[role="button"]:hover:not(:disabled):not(.loading) {
+  background-color: transparent;
+}
+
+/* Disabled */
+.sp-demo button:disabled, .sp-demo [role="button"][aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Focus ring — no box-shadow except outline for focus (applies to all interactive elements) */
+.sp-demo :focus-visible {
+  outline: 2px solid var(--sp-primary);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   7.5 Forms
+   Semantic elements styled directly. Classes: .field, .valid, .invalid, .toggle,
+   .dropdown, .icon-start, .icon-end. Date/time types styled for calendar state.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Input, Textarea — base
+   -------------------------------------------------------------------------- */
+.sp-demo input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), .sp-demo textarea {
+  font-family: inherit;
+  font-size: var(--sp-text-base);
+  line-height: var(--sp-leading);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  background-color: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+  color: var(--sp-text);
+  transition:
+    border-color var(--sp-dur-base) var(--sp-ease),
+    background-color var(--sp-dur-base) var(--sp-ease),
+    color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo input::placeholder, .sp-demo textarea::placeholder {
+  color: var(--sp-text-muted);
+}
+
+.sp-demo input:focus, .sp-demo textarea:focus {
+  border-color: var(--sp-border-2);
+  outline: none;
+}
+
+.sp-demo input.valid, .sp-demo textarea.valid {
+  border-color: var(--sp-success);
+}
+
+.sp-demo input.invalid, .sp-demo textarea.invalid {
+  border-color: var(--sp-danger);
+}
+
+.sp-demo input:disabled, .sp-demo textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sp-demo input:read-only, .sp-demo textarea:read-only {
+  background-color: var(--sp-surface-2);
+  cursor: default;
+}
+
+.sp-demo textarea {
+  resize: vertical;
+  min-height: 4rem;
+}
+
+/* --------------------------------------------------------------------------
+   Select — custom arrow via SVG, appearance: none
+   -------------------------------------------------------------------------- */
+.sp-demo select {
+  font-family: inherit;
+  font-size: var(--sp-text-base);
+  line-height: var(--sp-leading);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-8) var(--sp-2) var(--sp-3);
+  background-color: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+  color: var(--sp-text);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23636b60' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-3) center;
+  transition:
+    border-color var(--sp-dur-base) var(--sp-ease),
+    background-color var(--sp-dur-base) var(--sp-ease),
+    color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo select:focus {
+  border-color: var(--sp-border-2);
+  outline: none;
+}
+
+.sp-demo select.valid {
+  border-color: var(--sp-success);
+}
+
+.sp-demo select.invalid {
+  border-color: var(--sp-danger);
+}
+
+.sp-demo select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Input states: .dropdown, .icon-start, .icon-end (for combobox, location, etc.)
+   -------------------------------------------------------------------------- */
+.sp-demo input.dropdown {
+  padding-right: var(--sp-8);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23636b60' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-3) center;
+}
+
+.sp-demo input.icon-start {
+  padding-left: 2.5rem;
+}
+
+.sp-demo input.icon-end {
+  padding-right: 2.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Calendar / date-time inputs — consistent padding for native picker icon
+   -------------------------------------------------------------------------- */
+.sp-demo input[type="date"], .sp-demo input[type="datetime-local"], .sp-demo input[type="time"], .sp-demo input[type="month"], .sp-demo input[type="week"] {
+  padding-right: var(--sp-6);
+  min-height: 2.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   .field — stacks label + input + hint with gaps
+   -------------------------------------------------------------------------- */
+.sp-demo .field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.sp-demo .field label {
+  font-size: var(--sp-text-sm);
+  font-weight: 600;
+  color: var(--sp-text);
+}
+
+.sp-demo .field input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), .sp-demo .field textarea, .sp-demo .field select {
+  width: 100%;
+}
+
+.sp-demo .field small {
+  font-size: var(--sp-text-sm);
+  color: var(--sp-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Checkbox & Radio — appearance: none + custom checkmark via ::after
+   -------------------------------------------------------------------------- */
+.sp-demo input[type="checkbox"], .sp-demo input[type="radio"] {
+  appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  border: 1px solid var(--sp-border-2);
+  background-color: var(--sp-surface);
+  color: var(--sp-primary);
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  flex-shrink: 0;
+  transition:
+    background-color var(--sp-dur-base) var(--sp-ease),
+    border-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo input[type="checkbox"] {
+  border-radius: var(--sp-radius-sm);
+}
+
+.sp-demo input[type="radio"] {
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo input[type="checkbox"]:focus, .sp-demo input[type="radio"]:focus {
+  outline: none;
+  border-color: var(--sp-primary);
+  box-shadow: 0 0 0 2px var(--sp-primary);
+}
+
+.sp-demo input[type="checkbox"]:checked, .sp-demo input[type="radio"]:checked {
+  background-color: var(--sp-primary);
+  border-color: var(--sp-primary);
+}
+
+/* Checkmark via background (input has no ::after in many browsers) */
+.sp-demo input[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='10' viewBox='0 0 12 10' fill='none' stroke='%23eaece8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 5l3 3 7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 0.75rem auto;
+}
+
+/* Radio dot via radial gradient (input has no ::after in many browsers) */
+.sp-demo input[type="radio"]:checked {
+  background-image: radial-gradient(
+    circle at center,
+    var(--sp-primary-fg) 0.25rem,
+    transparent 0.3rem
+  );
+}
+
+.sp-demo input[type="checkbox"]:disabled, .sp-demo input[type="radio"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Checkbox/radio in label — align with text */
+.sp-demo label:has(input[type="checkbox"]), .sp-demo label:has(input[type="radio"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Toggle / Switch — pure CSS, no JS. Uses :has(input:checked).
+   -------------------------------------------------------------------------- */
+.sp-demo label.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  cursor: pointer;
+  position: relative;
+  padding-left: 2.75rem;
+  min-height: 1.5rem;
+}
+
+.sp-demo label.toggle input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 1.25rem;
+  margin: 0;
+  opacity: 0;
+  z-index: 1;
+  border: none;
+  background: transparent;
+}
+
+.sp-demo label.toggle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 1.25rem;
+  background-color: var(--sp-border);
+  border-radius: var(--sp-radius-full);
+  transition: background-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo label.toggle::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.125rem;
+  height: 1.125rem;
+  background-color: var(--sp-surface);
+  border-radius: 50%;
+  border: 1px solid var(--sp-border);
+  transition: transform var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo label.toggle:has(input:checked)::before {
+  background-color: var(--sp-primary);
+}
+
+.sp-demo label.toggle:has(input:checked)::after {
+  transform: translateY(-50%) translateX(1.25rem);
+  border-color: var(--sp-primary);
+  background-color: var(--sp-primary-fg);
+}
+
+/* Toggle uses track/thumb for state — hide checkbox checkmark */
+.sp-demo label.toggle input[type="checkbox"]:checked {
+  background-image: none;
+}
+
+/* --------------------------------------------------------------------------
+   Range — cross-browser track and thumb
+   -------------------------------------------------------------------------- */
+.sp-demo input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 0.5rem;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.sp-demo input[type="range"]::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  background-color: var(--sp-surface-2);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: -0.375rem;
+  background-color: var(--sp-primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo input[type="range"]::-webkit-slider-thumb:hover {
+  background-color: var(--sp-primary-hover);
+}
+
+.sp-demo input[type="range"]::-moz-range-track {
+  height: 0.5rem;
+  background-color: var(--sp-surface-2);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo input[type="range"]::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--sp-primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo input[type="range"]::-moz-range-thumb:hover {
+  background-color: var(--sp-primary-hover);
+}
+
+.sp-demo input[type="range"]:focus {
+  outline: none;
+}
+
+.sp-demo input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--sp-primary);
+}
+
+.sp-demo input[type="range"]:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--sp-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Fieldset — visible legend, clean border
+   -------------------------------------------------------------------------- */
+.sp-demo fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+  margin: 0;
+  min-width: 0;
+}
+
+.sp-demo fieldset legend {
+  padding: 0 var(--sp-2);
+  margin: 0;
+  font-size: var(--sp-text-sm);
+  font-weight: 600;
+  color: var(--sp-text);
+}
+
+.sp-demo fieldset .field + .field {
+  margin-top: 0;
+}
+
+.sp-demo fieldset .stack {
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   7.6 Alert / Notice
+   [role="alert"] styled directly. Variants: .success, .warning, .danger, .info.
+   ========================================================================== */
+.sp-demo [role="alert"] {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--sp-radius-md);
+  border: 1px solid var(--sp-border);
+  background-color: var(--sp-surface-2);
+  color: var(--sp-text);
+}
+
+.sp-demo [role="alert"].success {
+  border-color: var(--sp-success);
+  background-color: color-mix(in srgb, var(--sp-success) 15%, var(--sp-surface));
+  color: var(--sp-success-fg);
+}
+
+.sp-demo [role="alert"].warning {
+  border-color: var(--sp-warning);
+  background-color: color-mix(in srgb, var(--sp-warning) 15%, var(--sp-surface));
+  color: var(--sp-warning-fg);
+}
+
+.sp-demo [role="alert"].danger {
+  border-color: var(--sp-danger);
+  background-color: color-mix(in srgb, var(--sp-danger) 15%, var(--sp-surface));
+  color: var(--sp-danger-fg);
+}
+
+.sp-demo [role="alert"].info {
+  border-color: var(--sp-info);
+  background-color: color-mix(in srgb, var(--sp-info) 15%, var(--sp-surface));
+  color: var(--sp-info-fg);
+}
+
+.sp-demo [role="alert"][data-dismissible] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.sp-demo [role="alert"][data-dismissed] {
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+  transition:
+    opacity var(--sp-dur-base) var(--sp-ease),
+    transform var(--sp-dur-base) var(--sp-ease);
+}
+
+/* ==========================================================================
+   7.7 Badge / Tag
+   ========================================================================== */
+.sp-demo .badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--sp-text-xs);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--sp-radius-sm);
+  border: 1px solid transparent;
+  background-color: var(--sp-surface-2);
+  color: var(--sp-text-2);
+}
+
+.sp-demo .badge.success {
+  background-color: var(--sp-success);
+  color: var(--sp-success-fg);
+}
+
+.sp-demo .badge.danger {
+  background-color: var(--sp-danger);
+  color: var(--sp-danger-fg);
+}
+
+.sp-demo .badge.warning {
+  background-color: var(--sp-warning);
+  color: var(--sp-warning-fg);
+}
+
+.sp-demo .badge.info {
+  background-color: var(--sp-info);
+  color: var(--sp-info-fg);
+}
+
+.sp-demo .badge.outline {
+  background-color: transparent;
+  border-color: var(--sp-border-2);
+  color: var(--sp-text-2);
+}
+
+.sp-demo .badge.sm {
+  padding: 0.125rem var(--sp-1);
+  font-size: 0.6875rem;
+}
+
+.sp-demo .badge.lg {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--sp-text-sm);
+}
+
+/* ==========================================================================
+   7.8 Toast — markup styles only (JS API creates container + items)
+   Animate in/out via opacity + transform only.
+   ========================================================================== */
+.sp-demo #sp-toast-container {
+  position: fixed;
+  z-index: var(--sp-layer-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  pointer-events: none;
+}
+
+.sp-demo #sp-toast-container[data-position="top-right"] {
+  top: 0;
+  right: 0;
+}
+
+.sp-demo #sp-toast-container[data-position="top-left"] {
+  top: 0;
+  left: 0;
+}
+
+.sp-demo #sp-toast-container[data-position="bottom-right"] {
+  bottom: 0;
+  right: 0;
+}
+
+.sp-demo #sp-toast-container[data-position="bottom-left"] {
+  bottom: 0;
+  left: 0;
+}
+
+.sp-demo #sp-toast-container[data-position="top-center"] {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sp-demo [data-sp-toast] {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--sp-radius-md);
+  border: 1px solid var(--sp-border);
+  background-color: var(--sp-surface);
+  color: var(--sp-text);
+  box-shadow: var(--sp-shadow-sm);
+  pointer-events: auto;
+  transition:
+    opacity var(--sp-dur-base) var(--sp-ease),
+    transform var(--sp-dur-base) var(--sp-ease);
+}
+
+/* Type = thick left border accent; same surface and text for all */
+.sp-demo [data-sp-toast][data-type="success"] {
+  border-left-width: 4px;
+  border-left-color: var(--sp-success);
+}
+
+.sp-demo [data-sp-toast][data-type="danger"] {
+  border-left-width: 4px;
+  border-left-color: var(--sp-danger);
+}
+
+.sp-demo [data-sp-toast][data-type="warning"] {
+  border-left-width: 4px;
+  border-left-color: var(--sp-warning);
+}
+
+.sp-demo [data-sp-toast][data-type="info"] {
+  border-left-width: 4px;
+  border-left-color: var(--sp-info);
+}
+
+/* ==========================================================================
+   7.9 Progress Bar
+   <progress> styled directly. Variants: .success, .danger, .warning.
+   ========================================================================== */
+.sp-demo progress {
+  appearance: none;
+  width: 100%;
+  height: 0.5rem;
+  border: none;
+  border-radius: var(--sp-radius-full);
+  background-color: var(--sp-surface-2);
+  overflow: hidden;
+}
+
+.sp-demo progress::-webkit-progress-bar {
+  background-color: var(--sp-surface-2);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo progress::-webkit-progress-value {
+  background-color: var(--sp-primary);
+  border-radius: var(--sp-radius-full);
+  transition: background-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo progress::-moz-progress-bar {
+  background-color: var(--sp-primary);
+  border-radius: var(--sp-radius-full);
+  transition: background-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo progress.success::-webkit-progress-value, .sp-demo progress.success::-moz-progress-bar {
+  background-color: var(--sp-success);
+}
+
+.sp-demo progress.danger::-webkit-progress-value, .sp-demo progress.danger::-moz-progress-bar {
+  background-color: var(--sp-danger);
+}
+
+.sp-demo progress.warning::-webkit-progress-value, .sp-demo progress.warning::-moz-progress-bar {
+  background-color: var(--sp-warning);
+}
+
+/* Indeterminate (no value) — opacity pulse only (sustainability: no background-position) */
+.sp-demo progress:not([value])::-webkit-progress-bar {
+  background-color: var(--sp-primary);
+  animation: progress-indeterminate-opacity 1.2s var(--sp-ease) infinite;
+}
+
+@keyframes progress-indeterminate-opacity {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.sp-demo progress:not([value])::-moz-progress-bar {
+  background-color: var(--sp-primary);
+}
+
+/* ==========================================================================
+   7.10 Meter
+   ========================================================================== */
+.sp-demo meter {
+  appearance: none;
+  width: 100%;
+  height: 0.5rem;
+  border: none;
+  border-radius: var(--sp-radius-full);
+  background-color: var(--sp-surface-2);
+  overflow: hidden;
+}
+
+.sp-demo meter::-webkit-meter-bar {
+  background-color: var(--sp-surface-2);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo meter::-webkit-meter-optimum-value {
+  background-color: var(--sp-success);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo meter::-webkit-meter-suboptimum-value {
+  background-color: var(--sp-warning);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo meter::-webkit-meter-even-less-good-value {
+  background-color: var(--sp-danger);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo meter::-moz-meter-bar {
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo meter::-moz-meter-optimum {
+  background-color: var(--sp-success);
+}
+
+.sp-demo meter::-moz-meter-sub-optimum {
+  background-color: var(--sp-warning);
+}
+
+.sp-demo meter::-moz-meter-sub-sub-optimum {
+  background-color: var(--sp-danger);
+}
+
+/* ==========================================================================
+   7.11 Spinner
+   Border + transform only (sustainability). No JS.
+   ========================================================================== */
+.sp-demo .spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--sp-border);
+  border-top-color: var(--sp-primary);
+  border-radius: var(--sp-radius-full);
+  animation: spin 0.6s linear infinite;
+}
+
+.sp-demo .spinner.sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 2px;
+}
+
+.sp-demo .spinner.lg {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 3px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   7.12 Skeleton Loader
+   Shimmer off by default (eco). Add .animated to enable.
+   ========================================================================== */
+.sp-demo .skeleton {
+  background-color: var(--sp-surface-2);
+  border-radius: var(--sp-radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.sp-demo .skeleton.circle {
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo .skeleton.animated::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s var(--sp-ease) infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ==========================================================================
+   7.18 Navbar
+   Scoped to header / banner so sidebar, breadcrumb, and pagination nav are untouched.
+   One canonical selector; descendants use nesting to avoid repetition.
+   ========================================================================== */
+.sp-demo :is(header, [role="banner"]) > nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  background-color: var(--sp-surface);
+  border-bottom: 1px solid var(--sp-border);
+  position: sticky;
+  top: 0;
+  z-index: var(--sp-layer-raised);
+
+  & > * {
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  /* Normalize all row items to same cross-axis alignment and height */
+  & .brand,
+  & ul a,
+  & button,
+  & [role="button"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    box-sizing: border-box;
+    min-height: 0;
+    margin: 0;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  & .brand {
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--sp-text);
+  }
+
+  & .brand:hover {
+    color: var(--sp-primary);
+  }
+
+  & .cluster {
+    align-items: center;
+  }
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  & ul li {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  & ul a {
+    text-decoration: none;
+    color: var(--sp-text-2);
+    padding: var(--sp-1) var(--sp-2);
+    border-radius: var(--sp-radius-sm);
+    transition: color var(--sp-dur-base) var(--sp-ease);
+  }
+
+  & ul a:hover {
+    color: var(--sp-primary);
+  }
+
+  & ul a.active {
+    color: var(--sp-primary);
+    font-weight: 600;
+  }
+
+  & button.icon,
+  & [role="button"].icon {
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   7.19 Breadcrumb
+   Separators via ::before on li + li.
+   ========================================================================== */
+.sp-demo .breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--sp-text-sm);
+  line-height: 1.4;
+}
+
+.sp-demo .breadcrumb li {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.sp-demo .breadcrumb li + li::before {
+  content: " / ";
+  color: var(--sp-text-muted);
+  padding-right: var(--sp-2);
+  font-weight: 400;
+}
+
+.sp-demo .breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--sp-text-2);
+}
+
+.sp-demo .breadcrumb a:hover {
+  color: var(--sp-primary);
+}
+
+.sp-demo .breadcrumb li[aria-current="page"] {
+  color: var(--sp-text-muted);
+}
+
+/* ==========================================================================
+   7.20 Pagination
+   ========================================================================== */
+.sp-demo .pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sp-demo .pagination li {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sp-demo .pagination a, .sp-demo .pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  box-sizing: border-box;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--sp-radius-sm);
+  font-size: var(--sp-text-sm);
+  line-height: 1;
+  text-decoration: none;
+  color: var(--sp-text-2);
+  background-color: var(--sp-surface-2);
+  transition:
+    background-color var(--sp-dur-base) var(--sp-ease),
+    color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo .pagination a:hover {
+  background-color: var(--sp-surface-3);
+  color: var(--sp-primary);
+}
+
+.sp-demo .pagination a[aria-current="page"] {
+  background-color: var(--sp-primary);
+  color: var(--sp-primary-fg);
+}
+
+.sp-demo .pagination span {
+  color: var(--sp-text-muted);
+  cursor: default;
+}
+
+/* ==========================================================================
+   7.21 Sidebar
+   Fixed or sticky vertical nav. Collapsible via data-collapsed (JS later).
+   ========================================================================== */
+.sp-demo .sidebar {
+  background-color: var(--sp-surface);
+  border-right: 1px solid var(--sp-border);
+  padding: var(--sp-4);
+  width: 14rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sp-demo .sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.sp-demo .sidebar .sidebar-label {
+  font-size: var(--sp-text-xs);
+  font-weight: 600;
+  color: var(--sp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--sp-2) 0;
+  padding: 0;
+}
+
+.sp-demo .sidebar ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sp-demo .sidebar ul a {
+  display: block;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--sp-radius-sm);
+  text-decoration: none;
+  color: var(--sp-text-2);
+  transition:
+    background-color var(--sp-dur-base) var(--sp-ease),
+    color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo .sidebar ul a:hover {
+  background-color: var(--sp-surface-2);
+  color: var(--sp-primary);
+}
+
+.sp-demo .sidebar ul a.active {
+  background-color: var(--sp-surface-3);
+  color: var(--sp-primary);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   sp-dropdown / sp-menu — Web Component: trigger + menu panel
+   ========================================================================== */
+.sp-demo sp-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.sp-demo sp-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--sp-1));
+  left: 0;
+  min-width: 10rem;
+  background-color: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+  padding: var(--sp-2);
+  box-shadow: var(--sp-shadow-sm);
+  z-index: var(--sp-layer-dropdown);
+  list-style: none;
+  margin: 0;
+}
+
+.sp-demo sp-menu:not([hidden]) {
+  display: block;
+}
+
+.sp-demo sp-menu-item {
+  display: block;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--sp-radius-sm);
+  cursor: pointer;
+  font-size: var(--sp-text-sm);
+  color: var(--sp-text-2);
+  transition:
+    background-color var(--sp-dur-fast) var(--sp-ease),
+    color var(--sp-dur-fast) var(--sp-ease);
+}
+
+.sp-demo sp-menu-item:hover {
+  background-color: var(--sp-surface-2);
+  color: var(--sp-text);
+}
+
+.sp-demo sp-menu-item.danger {
+  color: var(--sp-danger-fg);
+}
+
+.sp-demo sp-menu-item.danger:hover {
+  background-color: color-mix(in srgb, var(--sp-danger) 15%, var(--sp-surface-2));
+  color: var(--sp-danger-fg);
+}
+
+/* ==========================================================================
+   7.14 Accordion
+   <details> / <summary> styled directly. Custom chevron, no JS.
+   ========================================================================== */
+.sp-demo details {
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+  background-color: var(--sp-surface);
+  overflow: hidden;
+}
+
+.sp-demo details + details {
+  margin-top: var(--sp-2);
+}
+
+.sp-demo summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--sp-3) var(--sp-4);
+  font-weight: 600;
+  color: var(--sp-text);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition: background-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo summary::-webkit-details-marker {
+  display: none;
+}
+
+.sp-demo summary::before {
+  content: "";
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-right: 2px solid var(--sp-text-2);
+  border-bottom: 2px solid var(--sp-text-2);
+  transform: rotate(45deg);
+  margin-right: var(--sp-2);
+  transition: transform var(--sp-dur-base) var(--sp-ease);
+  flex-shrink: 0;
+}
+
+.sp-demo details[open] summary::before {
+  transform: rotate(-135deg);
+}
+
+.sp-demo summary:hover {
+  background-color: var(--sp-surface-2);
+}
+
+.sp-demo details > *:not(summary) {
+  padding: 0 var(--sp-4) var(--sp-4);
+  padding-left: calc(var(--sp-4) + 0.375rem + var(--sp-2));
+}
+
+/* ==========================================================================
+   7.15 Modal / Dialog
+   <dialog> with backdrop, header/footer layout. Sizes: .sm, .lg, .full.
+   ========================================================================== */
+.sp-demo dialog {
+  display: none;
+  padding: 0;
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-lg);
+  background-color: var(--sp-surface);
+  box-shadow: var(--sp-shadow-md);
+  max-width: 560px;
+  width: calc(100% - var(--sp-8));
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.sp-demo dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-demo dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sp-demo dialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--sp-border);
+  flex-shrink: 0;
+}
+
+.sp-demo dialog header h1, .sp-demo dialog header h2, .sp-demo dialog header h3, .sp-demo dialog header h4, .sp-demo dialog header h5, .sp-demo dialog header h6 {
+  margin: 0;
+  font-size: var(--sp-text-lg);
+}
+
+.sp-demo .dialog-body {
+  padding: var(--sp-4);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.sp-demo dialog footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--sp-border);
+  flex-shrink: 0;
+}
+
+.sp-demo dialog.sm {
+  max-width: 400px;
+}
+
+.sp-demo dialog.lg {
+  max-width: 800px;
+}
+
+.sp-demo dialog.full {
+  max-width: 95vw;
+  width: 95vw;
+  max-height: 95vh;
+  height: 95vh;
+  border-radius: var(--sp-radius-md);
+}
+
+/* ==========================================================================
+   7.22 Table
+   <table> styled directly. Variants: .striped, .bordered, .compact.
+   ========================================================================== */
+.sp-demo table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--sp-text-sm);
+}
+
+.sp-demo thead th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--sp-text);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--sp-border);
+  background-color: var(--sp-surface-2);
+}
+
+.sp-demo tbody td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--sp-border);
+  color: var(--sp-text-2);
+}
+
+.sp-demo tbody tr:hover {
+  background-color: var(--sp-surface-2);
+}
+
+.sp-demo table.striped tbody tr:nth-child(even) {
+  background-color: var(--sp-surface-2);
+}
+
+.sp-demo table.striped tbody tr:nth-child(even):hover {
+  background-color: var(--sp-surface-3);
+}
+
+.sp-demo table.bordered th, .sp-demo table.bordered td {
+  border: 1px solid var(--sp-border);
+}
+
+.sp-demo table.bordered thead th {
+  border-bottom: 1px solid var(--sp-border);
+}
+
+.sp-demo table.compact th, .sp-demo table.compact td {
+  padding: var(--sp-1) var(--sp-2);
+}
+
+.sp-demo table.compact thead th {
+  font-size: var(--sp-text-xs);
+}
+
+/* ==========================================================================
+   7.23 Card
+   ========================================================================== */
+.sp-demo .card {
+  background-color: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+  padding: var(--sp-4);
+  overflow: hidden;
+}
+
+.sp-demo .card header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--sp-border);
+}
+
+.sp-demo .card header h1, .sp-demo .card header h2, .sp-demo .card header h3, .sp-demo .card header h4, .sp-demo .card header h5, .sp-demo .card header h6 {
+  margin: 0;
+}
+
+.sp-demo .card footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--sp-border);
+}
+
+.sp-demo .card.outline {
+  background-color: transparent;
+  border-color: var(--sp-border);
+}
+
+.sp-demo .card.flat {
+  border-color: transparent;
+  background-color: var(--sp-surface-2);
+}
+
+.sp-demo .card.interactive {
+  cursor: pointer;
+  transition:
+    background-color var(--sp-dur-base) var(--sp-ease),
+    border-color var(--sp-dur-base) var(--sp-ease);
+}
+
+.sp-demo .card.interactive:hover {
+  background-color: var(--sp-surface-2);
+  border-color: var(--sp-border-2);
+}
+
+/* ==========================================================================
+   7.24 Avatar & Avatar Group
+   ========================================================================== */
+.sp-demo .avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--sp-radius-full);
+  background-color: var(--sp-surface-2);
+  color: var(--sp-text-2);
+  font-size: var(--sp-text-xs);
+  font-weight: 600;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sp-demo .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sp-demo .avatar.sm {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.625rem;
+}
+
+.sp-demo .avatar.lg {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: var(--sp-text-sm);
+}
+
+.sp-demo .avatar[data-status] {
+  position: relative;
+}
+
+.sp-demo .avatar[data-status="online"]::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--sp-success);
+  border: 2px solid var(--sp-surface);
+  border-radius: var(--sp-radius-full);
+}
+
+.sp-demo .avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sp-demo .avatar-group .avatar {
+  margin-left: -0.5rem;
+  border: 2px solid var(--sp-surface);
+}
+
+.sp-demo .avatar-group .avatar:first-child {
+  margin-left: 0;
+}
+
+/* ==========================================================================
+   7.25 Stat / Metric Block
+   ========================================================================== */
+.sp-demo .stat {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-3) 0;
+}
+
+.sp-demo .stat-label {
+  display: block;
+  font-size: var(--sp-text-sm);
+  color: var(--sp-text-muted);
+  margin: 0 0 var(--sp-1) 0;
+}
+
+.sp-demo .stat-value {
+  display: block;
+  font-size: var(--sp-text-xl);
+  font-weight: 700;
+  color: var(--sp-text);
+  margin: 0 0 var(--sp-1) 0;
+  line-height: var(--sp-leading-tight);
+}
+
+.sp-demo .stat-change {
+  display: block;
+  font-size: var(--sp-text-sm);
+  margin: 0;
+}
+
+.sp-demo .stat-change.positive {
+  color: var(--sp-success);
+}
+
+.sp-demo .stat-change.negative {
+  color: var(--sp-danger);
+}
+
+/* ==========================================================================
+   7.26 Code Block
+   Intentionally dark regardless of theme (readable code block). [data-copy] for JS.
+   ========================================================================== */
+.sp-demo pre:has(> code) {
+  background-color: #1a1d1a;
+  border-color: var(--sp-border);
+  color: #eaece8;
+}
+
+.sp-demo pre:has(> code) code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+/* ==========================================================================
+   7.27 Divider
+   <hr> styled in 7.2. Here: .label variant and .divider.vertical.
+   ========================================================================== */
+.sp-demo hr.label {
+  border: none;
+  border-top: 1px solid var(--sp-border);
+  margin: var(--sp-6) 0;
+  text-align: center;
+}
+
+.sp-demo hr.label::before {
+  content: attr(data-label);
+  display: inline-block;
+  position: relative;
+  top: -0.75em;
+  padding: 0 var(--sp-3);
+  background-color: var(--sp-bg);
+  font-size: var(--sp-text-sm);
+  color: var(--sp-text-muted);
+}
+
+.sp-demo .divider.vertical {
+  width: 1px;
+  min-height: 1rem;
+  align-self: stretch;
+  flex-shrink: 0;
+  background-color: var(--sp-border);
+  margin: 0 var(--sp-4);
+  padding: 0;
+  border: none;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* Base — inputs and buttons are already fluid (width:100% on inputs,
+   no fixed px widths on buttons). */
+
+.sp-demo .table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-md);
+}
+
+.sp-demo .table-wrap table {
+  border: none;
+  border-radius: 0;
+  min-width: 480px;
+}
+
+/* Tabs — scrollable tab list on small screens */
+.sp-demo sp-tab-list {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px solid var(--sp-border);
+  margin-bottom: var(--sp-4);
+}
+
+.sp-demo sp-tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+.sp-demo sp-tab {
+  flex-shrink: 0;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--sp-2) var(--sp-4);
+  font-size: 0.875rem;
+  color: var(--sp-text-2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color var(--sp-dur-fast) var(--sp-ease), border-color var(--sp-dur-fast) var(--sp-ease);
+}
+
+.sp-demo sp-tab:hover {
+  color: var(--sp-text);
+}
+
+.sp-demo sp-tab[aria-selected="true"] {
+  color: var(--sp-primary-outline, var(--sp-primary));
+  border-bottom-color: var(--sp-primary-outline, var(--sp-primary));
+}
+
+.sp-demo sp-panel {
+  display: block;
+  padding-top: var(--sp-4);
+}
+
+.sp-demo sp-panel[hidden] {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .sp-demo .grid.cols-2, .sp-demo .grid.cols-3, .sp-demo .grid.cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-demo dialog {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+    margin: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .sp-demo .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    height: 100vh;
+    width: 80vw;
+    max-width: 280px;
+    z-index: var(--sp-layer-modal);
+    transition: left var(--sp-dur-base) var(--sp-ease);
+    box-shadow: var(--sp-shadow-md);
+  }
+
+  .sp-demo .sidebar[data-open] {
+    left: 0;
+  }
+
+  .sp-demo :is(header, [role="banner"]) > nav {
+    flex-wrap: wrap;
+    padding: var(--sp-3) var(--sp-4);
+
+    & ul {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      padding: var(--sp-2) 0;
+      gap: 0;
+    }
+
+    &[data-nav-open] ul {
+      display: flex;
+    }
+
+    & ul a {
+      padding: var(--sp-3) var(--sp-2);
+      width: 100%;
+    }
+  }
+
+  .sp-demo .grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-demo .cluster.stack-mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sp-demo .cluster.stack-mobile button, .sp-demo .cluster.stack-mobile [role="button"] {
+    width: 100%;
+  }
+
+  .sp-demo .pagination a, .sp-demo .pagination span {
+    width: 2rem;
+    height: 2rem;
+    font-size: var(--sp-text-xs);
+  }
+
+  .sp-demo .avatar-group .avatar {
+    margin-left: -0.375rem;
+  }
+
+  .sp-demo h1 {
+    font-size: var(--sp-text-2xl);
+  }
+
+  .sp-demo h2 {
+    font-size: var(--sp-text-xl);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .sp-demo .grid.cols-3, .sp-demo .grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sp-demo .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    height: 100vh;
+    width: 260px;
+    z-index: var(--sp-layer-modal);
+    transition: left var(--sp-dur-base) var(--sp-ease);
+    box-shadow: var(--sp-shadow-md);
+  }
+
+  .sp-demo .sidebar[data-open] {
+    left: 0;
+  }
+
+  .sp-demo :is(header, [role="banner"]) > nav {
+    & ul {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    &[data-nav-open] ul {
+      display: flex;
+    }
+  }
+
+  .sp-demo dialog {
+    max-width: min(90vw, 560px);
+    width: calc(100% - var(--sp-6));
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  .sp-demo .grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sp-demo .container {
+    padding-inline: var(--sp-6);
+  }
+}
+
+@media (min-width: 1440px) {
+  .sp-demo .container {
+    padding-inline: var(--sp-8);
+  }
+
+  .sp-demo .grid.cols-4 {
+    gap: var(--sp-6);
+  }
+}

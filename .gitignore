@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# VitePress / Vite
+docs/.vitepress/cache/
+.vite/
+
+# Logs and temp
+*.log
+npm-debug.log*
+.npm
+.env.local
+.env.*.local
+
+# Benchmark artifacts (optional: screenshots, reports)
+# benchmarks/reports/
+# benchmarks/screenshots/
+
+# dist/ is intentionally tracked so clone-and-run works for demo and benchmarks.
+# To ignore dist and build from source only, uncomment:
+# dist/
