@@ -19,11 +19,14 @@ export default {
     if (typeof DefaultTheme.enhanceApp === 'function') {
       await DefaultTheme.enhanceApp(ctx)
     }
-    const mod = await import('../../../src/sprout.js')
-    const Sprout = mod.default || mod
-    window.Sprout = Sprout
-    if (Sprout.init) {
-      Sprout.init()
+    // Load Sprout only on client so SSR/build does not run document-dependent code
+    if (typeof window !== 'undefined' && !import.meta.env?.SSR) {
+      const mod = await import('../../../src/sprout.js')
+      const Sprout = mod.default || mod
+      window.Sprout = Sprout
+      if (Sprout.init) {
+        Sprout.init()
+      }
     }
   }
 }

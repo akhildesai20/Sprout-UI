@@ -11,6 +11,7 @@ const SPROUT_CUSTOM_ELEMENTS = [
 ]
 
 export default defineConfig({
+  base: '/Sprout-UI/',
   title: 'Sprout UI',
   description: 'Lightweight, sustainable, zero-dependency UI library.',
   // Compile-time: treat Sprout custom elements as native (not Vue components).
@@ -38,7 +39,7 @@ export default defineConfig({
         text: 'v1.0',
         items: [
           { text: 'Changelog', link: '/changelog' },
-          { text: 'GitHub',    link: 'https://github.com/yourname/sprout-ui' },
+          { text: 'GitHub',    link: 'https://github.com/akhildesai20/Sprout-UI' },
         ]
       }
     ],
@@ -142,7 +143,7 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/yourname/sprout-ui' }
+      { icon: 'github', link: 'https://github.com/akhildesai20/Sprout-UI' }
     ],
     footer: {
       message: 'MIT License · Lightweight by principle. Sustainable by design.',

@@ -52,23 +52,21 @@ In a built app, point the paths to your bundled or copied assets (e.g. `dist/spr
 
 ### Plain HTML via CDN
 
-The package is available on jsDelivr and unpkg. Use the version you need (e.g. `0.1.0` or `latest`).
+The package is available on jsDelivr and unpkg. Use the version you need (e.g. `0.1.1`) or `latest` (not recommended for production).
 
 **jsDelivr:**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.0/dist/sprout.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.0/dist/sprout.bundle.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.1/dist/sprout.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.1/dist/sprout.bundle.js"></script>
 ```
 
 **unpkg:**
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/@akhildesai20/sprout-ui@0.1.0/dist/sprout.min.css">
-<script src="https://unpkg.com/@akhildesai20/sprout-ui@0.1.0/dist/sprout.bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@akhildesai20/sprout-ui@0.1.1/dist/sprout.min.css">
+<script src="https://unpkg.com/@akhildesai20/sprout-ui@0.1.1/dist/sprout.bundle.js"></script>
 ```
-
-Replace the version in the URL with the one you need (e.g. `0.1.1`) or use `latest` (not recommended for production).
 
 ### ESM / bundler (Vite, Rollup, etc.)
 
@@ -91,6 +89,10 @@ Sprout.init();
 ```
 
 After `Sprout.init()`, modals, toasts, tabs, dropdowns, and other components work. You can also use `window.Sprout` (e.g. `Sprout.toast('Hello')`) when the script runs in the browser.
+
+## Documentation
+
+Full documentation is published at **https://akhildesai20.github.io/Sprout-UI/** (GitHub Pages). To run the docs locally: `npm run docs:dev` and open the URL shown.
 
 ## Links
 

@@ -20,5 +20,4 @@ First npm release. Package name: `@akhildesai20/sprout-ui`.
 
 ### Known limitations
 
-- CDN not set up; use npm or copy dist files.
-- Docs and benchmarks live in the GitHub repo only; not shipped in the npm package.
+- Docs and benchmarks live in the GitHub repo only; not shipped in the npm package. Documentation is deployed to GitHub Pages.

@@ -29,6 +29,7 @@ Hover or focus the button or text below to see the tooltip. Tooltips are attache
 
 <script>
 (function bindTooltipDemo() {
+  if (typeof document === 'undefined') return; // skip during SSR
   function run() {
     if (!window.Sprout) return false;
     var btn = document.getElementById('tooltip-demo-btn');

@@ -10,6 +10,8 @@ Thumbs.db
 
 # VitePress / Vite
 docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/.vitepress/.temp/
 .vite/
 
 # Logs and temp
@@ -22,6 +24,9 @@ npm-debug.log*
 # Benchmark artifacts (optional: screenshots, reports)
 # benchmarks/reports/
 # benchmarks/screenshots/
+
+# npm pack output
+*.tgz
 
 # dist/ is intentionally tracked so clone-and-run works for demo and benchmarks.
 # To ignore dist and build from source only, uncomment:
