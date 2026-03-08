@@ -39,6 +39,7 @@ export default defineConfig({
         text: 'v1.0',
         items: [
           { text: 'Changelog', link: '/changelog' },
+          { text: 'About',     link: '/about' },
           { text: 'GitHub',    link: 'https://github.com/akhildesai20/Sprout-UI' },
         ]
       }
@@ -139,6 +140,12 @@ export default defineConfig({
           { text: 'JavaScript API', link: '/reference/javascript-api' },
           { text: 'Design Tokens',  link: '/tokens' },
           { text: 'Changelog',      link: '/changelog' },
+        ]
+      },
+      {
+        text: 'About',
+        items: [
+          { text: 'About', link: '/about' },
         ]
       }
     ],
