@@ -2,20 +2,23 @@
 
 All notable changes to Sprout UI are documented here.
 
-## [1.0.0] — 2025
+## [0.1.1] — 2025
 
-Initial release. Distribution and npm publishing are planned for a later phase.
+### Changed
+
+- **Stat component** — Refined internal spacing and rhythm. `.stat` now uses an explicit `gap` for consistent spacing between label, value, and change; improves balance when used in cards and dashboard layouts.
+
+## [0.1.0] — 2025
+
+First npm release. Package name: `@akhildesai20/sprout-ui`.
 
 ### Included
 
-- **Core CSS** (`src/sprout.css`) — Design tokens, reset, typography, layout primitives, buttons, forms, feedback, navigation, data display, overlays. Dark, light, high-contrast, and auto themes.
-- **Core JS** (`src/sprout.js`) — Theme API, modal, dismissible alerts, toasts, copy button, sidebar/nav collapse, tooltip, `<sp-tabs>` and `<sp-dropdown>` web components. Auto-init on DOMContentLoaded.
-- **Docs** — VitePress site in `docs/` with guides, components, layout, tokens, and reference. Scoped CSS for demos.
-- **Benchmarks** — Baseline, sprout-components, and sprout-interactions pages plus results template for Lighthouse and DevTools.
-- **Demo** — Kitchen-sink demo at `demo/index.html`.
+- **Core CSS** (`dist/sprout.min.css`) — Design tokens, reset, typography, layout primitives, buttons, forms, feedback, navigation, data display, overlays. Dark, light, high-contrast, and auto themes.
+- **Core JS** (`dist/sprout.min.js` ESM, `dist/sprout.bundle.js` script) — Theme API, modal, dismissible alerts, toasts, copy button, sidebar/nav collapse, tooltip, `<sp-tabs>` and `<sp-dropdown>` web components. Auto-init on DOMContentLoaded. Bundle exposes `window.Sprout`.
+- **Consumption:** `import Sprout from "@akhildesai20/sprout-ui"` and `import "@akhildesai20/sprout-ui/css"`, or script tag + link for plain HTML.
 
 ### Known limitations
 
-- npm package not published yet; use from repo or copy dist files.
-- CDN/distribution not set up.
-- Docs assume local build; no public docs host yet.
+- CDN not set up; use npm or copy dist files.
+- Docs and benchmarks live in the GitHub repo only; not shipped in the npm package.

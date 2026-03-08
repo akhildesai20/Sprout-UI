@@ -11,7 +11,93 @@ Ultra-lightweight, sustainable, zero-dependency UI library for the web. Use the 
 
 ## Status
 
-Sprout is in active development. Core CSS and JS, docs, benchmarks, and a kitchen-sink demo are in place. **Distribution (npm, CDN) is the next phase** — not complete yet. You can use the library by cloning this repo and using the files in `dist/`, or by copying them into your project.
+- **GitHub:** [akhildesai20/Sprout-UI](https://github.com/akhildesai20/Sprout-UI) — repo is public.
+- **npm:** Published as [@akhildesai20/sprout-ui](https://www.npmjs.com/package/@akhildesai20/sprout-ui). Current version: **0.1.1**. Install from npm, use CDN, or clone the repo and use the built files in `dist/`.
+
+## Installation
+
+```bash
+npm install @akhildesai20/sprout-ui
+```
+
+## Usage
+
+### Plain HTML (script tag)
+
+Link the CSS and load the bundle. The bundle injects styles and runs the JS; `window.Sprout` is set and components auto-initialize.
+
+```html
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My app</title>
+  <link rel="stylesheet" href="node_modules/@akhildesai20/sprout-ui/dist/sprout.min.css">
+</head>
+<body>
+  <button>Click me</button>
+  <script src="node_modules/@akhildesai20/sprout-ui/dist/sprout.bundle.js"></script>
+</body>
+</html>
+```
+
+Or use the bundle only (it includes the CSS):
+
+```html
+<script src="node_modules/@akhildesai20/sprout-ui/dist/sprout.bundle.js"></script>
+```
+
+In a built app, point the paths to your bundled or copied assets (e.g. `dist/sprout.min.css`, `dist/sprout.bundle.js`). If you clone the repo instead of using npm, use the files in the repo’s `dist/` folder the same way.
+
+### Plain HTML via CDN
+
+The package is available on jsDelivr and unpkg. Use the version you need (e.g. `0.1.0` or `latest`).
+
+**jsDelivr:**
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.0/dist/sprout.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.0/dist/sprout.bundle.js"></script>
+```
+
+**unpkg:**
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@akhildesai20/sprout-ui@0.1.0/dist/sprout.min.css">
+<script src="https://unpkg.com/@akhildesai20/sprout-ui@0.1.0/dist/sprout.bundle.js"></script>
+```
+
+Replace the version in the URL with the one you need (e.g. `0.1.1`) or use `latest` (not recommended for production).
+
+### ESM / bundler (Vite, Rollup, etc.)
+
+After installing the package:
+
+```js
+import "@akhildesai20/sprout-ui/css";
+import Sprout from "@akhildesai20/sprout-ui";
+
+Sprout.init();
+```
+
+Or with explicit paths:
+
+```js
+import "@akhildesai20/sprout-ui/dist/sprout.min.css";
+import Sprout from "@akhildesai20/sprout-ui";
+
+Sprout.init();
+```
+
+After `Sprout.init()`, modals, toasts, tabs, dropdowns, and other components work. You can also use `window.Sprout` (e.g. `Sprout.toast('Hello')`) when the script runs in the browser.
+
+## Links
+
+- **GitHub:** [akhildesai20/Sprout-UI](https://github.com/akhildesai20/Sprout-UI)
+- **npm:** [@akhildesai20/sprout-ui](https://www.npmjs.com/package/@akhildesai20/sprout-ui)
+
+**What’s included:** One CSS file and one JS file (or a single bundle). Design tokens, typography, layout primitives, forms, feedback, navigation, data display, overlays. Docs and benchmarks live in the repo.
 
 ## Project structure
 
@@ -25,6 +111,7 @@ Sprout is in active development. Core CSS and JS, docs, benchmarks, and a kitche
 | `demo/` | Kitchen-sink demo (`demo/index.html`). |
 | `package.json` | Scripts and metadata. |
 | `SPROUT.md` | Design and behaviour spec (for contributors and AI). |
+| `tests/install/` | Smoke tests: `plain-html.html` (bundle), `esm.html` (ESM). Serve repo root and open these to verify install. |
 
 ## Local development
 
@@ -39,31 +126,7 @@ npm run build
 
 Generated files: `dist/*` from `npm run build`; `docs/.vitepress/theme/sprout-scoped.css` from `node scripts/scope-sprout-css.js` (run after changing `src/sprout.css`). See `CONTRIBUTING.md` for details.
 
-## Using Sprout today
-
-Without npm or CDN, use the built files from this repo:
-
-1. Copy `dist/sprout.min.css` and `dist/sprout.min.js` into your project, or
-2. Use the single-file bundle: `dist/sprout.bundle.js` (injects CSS and runs JS).
-
-Example (relative to your HTML):
-
-```html
-<link rel="stylesheet" href="path/to/sprout.min.css">
-<script type="module">
-  import Sprout from './path/to/sprout.min.js';
-  window.Sprout = Sprout;
-  if (Sprout.init) Sprout.init();
-</script>
-```
-
-Or with the bundle (no module):
-
-```html
-<script src="path/to/sprout.bundle.js"></script>
-```
-
-Set `data-theme="dark" | "light" | "high-contrast"` on `<html>`, or omit for OS preference.
+Set `data-theme="dark" | "light" | "high-contrast"` on `<html>` to pick a theme, or omit for OS preference.
 
 ## Components (overview)
 

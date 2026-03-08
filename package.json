@@ -1,6 +1,6 @@
 {
-  "name": "sprout-ui",
-  "version": "1.0.0",
+  "name": "@akhildesai20/sprout-ui",
+  "version": "0.1.1",
   "description": "Ultra-lightweight, sustainable, zero-dependency UI library",
   "keywords": [
     "ui",
@@ -15,6 +15,10 @@
     "type": "git",
     "url": "https://github.com/akhildesai20/Sprout-UI.git"
   },
+  "homepage": "https://github.com/akhildesai20/Sprout-UI#readme",
+  "bugs": {
+    "url": "https://github.com/akhildesai20/Sprout-UI/issues"
+  },
   "type": "module",
   "main": "dist/sprout.bundle.js",
   "module": "dist/sprout.min.js",
@@ -24,12 +28,13 @@
       "import": "./dist/sprout.min.js",
       "require": "./dist/sprout.bundle.js"
     },
-    "./css": "./dist/sprout.min.css",
-    "./dist/sprout.min.css": "./dist/sprout.min.css"
+    "./css": "./dist/sprout.min.css"
   },
   "files": [
     "dist/",
-    "src/"
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build:css": "lightningcss --minify src/sprout.css -o dist/sprout.min.css",
