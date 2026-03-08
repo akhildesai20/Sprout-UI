@@ -1,6 +1,6 @@
 # JavaScript API
 
-Sprout exposes a single object, `Sprout`, with a small set of methods. Use it when you load `sprout.min.js` (or the bundle). No build step is required.
+Sprout exposes a single object, `Sprout`, with a small set of methods. Use it when you load the bundle (`sprout.bundle.js`) or import the ESM package (`@akhildesai20/sprout-ui`). No build step is required for the bundle.
 
 ## init
 

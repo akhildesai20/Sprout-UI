@@ -141,7 +141,7 @@ Set `data-theme="dark" | "light" | "high-contrast"` on `<html>` to pick a theme,
 | Navigation | Navbar, breadcrumb, pagination, sidebar |
 | Overlays | Modal (`data-modal`), `<sp-dropdown>`, `<sp-tabs>`, toasts, tooltip |
 
-Full reference is in the docs (run `npm run docs:dev`).
+Full reference is in the [documentation](https://akhildesai20.github.io/Sprout-UI/) (or run `npm run docs:dev` locally).
 
 ## Customizing
 

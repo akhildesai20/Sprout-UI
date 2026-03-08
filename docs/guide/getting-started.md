@@ -12,28 +12,48 @@ It is built for dashboards, tools, prototypes, admin panels, and quick experimen
 
 ## Install
 
-### CSS + JS files
-
-```html
-<link rel="stylesheet" href="sprout.min.css">
-<script src="sprout.min.js" defer></script>
-```
-
-### Single-file bundle
-
-```html
-<script src="sprout.bundle.js" defer></script>
-```
-
-### npm
-
 ```bash
-npm install sprout-ui
+npm install @akhildesai20/sprout-ui
 ```
+
+### ESM / bundler (Vite, Rollup, etc.)
 
 ```js
-import 'sprout-ui/dist/sprout.min.css'
-import Sprout from 'sprout-ui'
+import "@akhildesai20/sprout-ui/css";
+import Sprout from "@akhildesai20/sprout-ui";
+
+Sprout.init();
+```
+
+Or with explicit paths: `import "@akhildesai20/sprout-ui/dist/sprout.min.css"` and `import Sprout from "@akhildesai20/sprout-ui"`. Call `Sprout.init()` after import so custom elements and event handlers are registered.
+
+### Plain HTML (local dist or clone)
+
+When using files from a cloned repo or from `node_modules`, link the CSS and load the **bundle** (the bundle includes CSS and JS and sets `window.Sprout`):
+
+```html
+<link rel="stylesheet" href="node_modules/@akhildesai20/sprout-ui/dist/sprout.min.css">
+<script src="node_modules/@akhildesai20/sprout-ui/dist/sprout.bundle.js"></script>
+```
+
+If you cloned the repo, use paths to the repo’s `dist/` folder (e.g. `dist/sprout.min.css`, `dist/sprout.bundle.js`) instead of `node_modules/...`.
+
+### CDN
+
+The package is published on npm and available via jsDelivr and unpkg. Pin a version (e.g. `0.1.1`) in production.
+
+**jsDelivr:**
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.1/dist/sprout.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@akhildesai20/sprout-ui@0.1.1/dist/sprout.bundle.js"></script>
+```
+
+**unpkg:**
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@akhildesai20/sprout-ui@0.1.1/dist/sprout.min.css">
+<script src="https://unpkg.com/@akhildesai20/sprout-ui@0.1.1/dist/sprout.bundle.js"></script>
 ```
 
 ## The core idea
